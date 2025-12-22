@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JavaScript 完整入門課程｜戴梅枝</title>
+  <style>:root{--ink:#1f2937;--muted:#64748b;--bg:#f6f7fb;--panel:#fff;--brand:#4f46e5;--ok:#10b981}
+*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{font-family:Arial,"微軟正黑體",system-ui,-apple-system,Segoe UI,Roboto,Noto Sans,"Helvetica Neue",sans-serif;color:var(--ink);background:var(--bg);line-height:1.75}
+header{max-width:1100px;margin:22px auto 8px;padding:0 16px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+a{color:var(--brand);text-decoration:none}a:hover{text-decoration:underline}
+main{max-width:1100px;margin:10px auto 40px;padding:0 16px}
+.hero{background:linear-gradient(135deg,#eef2ff,#f8fafc);border:1px solid #e5e7eb;border-radius:16px;padding:16px 18px;box-shadow:0 12px 26px rgba(0,0,0,.06)}
+.toc{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:12px 14px;margin:14px 0;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+.toc h3{margin:6px 0 8px}.toc ol{columns:2;column-gap:18px;padding-left:20px;margin:0}@media (max-width:760px){.toc ol{columns:1}}
+.section{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px 18px;margin:14px 0;box-shadow:0 8px 18px rgba(0,0,0,.06)}
+.section h2{margin:0 0 8px}.section .desc{color:var(--muted);margin-top:4px}
+pre{background:#0b1220;color:#dbeafe;padding:10px 12px;border-radius:10px;overflow:auto}code{color:#e0e7ff}
+.btn{display:inline-block;padding:8px 12px;border:1px solid #d1d5db;border-radius:10px;background:#fff;font-weight:600;cursor:pointer}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,0,0,.08)}
+.output{background:#0b1220;color:#a7f3ff;border-radius:10px;border:1px solid #1e293b;padding:8px 10px;margin-top:8px;min-height:34px;white-space:pre-wrap}
+.badge{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;border:1px solid #c7d2fe;background:#eef2ff;color:#3730a3;margin-left:6px}
+.note{background:#f8fafc;border-left:6px solid #93c5fd;padding:8px 10px;border-radius:8px;margin:8px 0}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media (max-width:780px){.grid-2{grid-template-columns:1fr}}
+.small{font-size:14px;color:var(--muted)}hr.sep{border:none;height:1px;background:linear-gradient(90deg,transparent,#e5e7eb,transparent);margin:20px 0}
+.navbar{display:flex;justify-content:space-between;gap:8px;margin-top:12px}
+.navbar a{display:inline-block;padding:8px 12px;border:1px solid #d1d5db;border-radius:10px;background:#fff;font-weight:600}
+.navbar a:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,0,0,.08)}
+.practice{background:#f0fdf4;border:1px dashed #86efac;border-radius:10px;padding:8px 10px;margin-top:10px}
+#topAnchor{position:relative;top:-12px}</style>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <h1>JavaScript 完整入門課程 <span class="badge">適合初學者</span></h1>
+      <a class="btn" href="index.html">← 返回首頁</a>
+    </div>
+  </header>
+  <main>
+    <div id="topAnchor"></div>
+    <div class="hero">
+      <p><b>學習重點：</b>從用途、語法、資料型態、陣列/物件，到 DOM、Canvas、正則、JSON、jQuery、爬蟲示範、React、Node 平行運用，一頁打通。</p>
+      <div class="note">可點目錄直達各節；多數小節提供程式碼與練習提示。</div>
+    </div>
+    <div class="toc">
+      <h3>目錄</h3>
+      <ol>
+        <li><a href="#s1">1. JavaScript 用來做什麼</a></li>
+        <li><a href="#s2">2. JavaScript 基本功能</a></li>
+        <li><a href="#s3">3. 深入理解 JavaScript 資料型態 (Data Types)</a></li>
+        <li><a href="#s4">4. javascript的資料型態有哪些</a></li>
+        <li><a href="#s5">5. javascript字串處理</a></li>
+        <li><a href="#s6">6. Javascript 字串處理函式</a></li>
+        <li><a href="#s7">7. JavaScript 數值函數介紹。</a></li>
+        <li><a href="#s8">8. javascript數值函式</a></li>
+        <li><a href="#s9">9. javascript 有關陣列宣告處理和應用</a></li>
+        <li><a href="#s10">10. Java script的陣列(Array)</a></li>
+        <li><a href="#s11">11. JavaScript 迴圈的用法說明及使用</a></li>
+        <li><a href="#s12">12. JavaScript 迴圈應用</a></li>
+        <li><a href="#s13">13. JavaScript if用法</a></li>
+        <li><a href="#s14">14. switch用法有哪些及說明</a></li>
+        <li><a href="#s15">15. Java script的sort排序及演算法</a></li>
+        <li><a href="#s16">16. JavaScript 函式互動學習中心</a></li>
+        <li><a href="#s17">17. JavaScript Canvas 入門示範教學</a></li>
+        <li><a href="#s18">18. Javascript的正則表示式如何用擧例</a></li>
+        <li><a href="#s19">19. Javascript Json物件的使用介紹</a></li>
+        <li><a href="#s20">20. JavaScript json物件使用方法</a></li>
+        <li><a href="#s21">21. 什麼是jQuery?</a></li>
+        <li><a href="#s22">22. jQuery如何使用?及說明</a></li>
+        <li><a href="#s23">23. avaScript 如何開啟其他網頁</a></li>
+        <li><a href="#s24">24. 使用Java script 寫一個爬蟲程式</a></li>
+        <li><a href="#s25">25. JavaScript 爬蟲示範</a></li>
+        <li><a href="#s26">26. 做出一個React計數器</a></li>
+        <li><a href="#s27">27. Node.js 平行運用的核心做法</a></li>
+        <li><a href="#s28">28. Node.js的平行運用</a></li>
+        <li><a href="#s29">29. JavaScript 的資料輸入與資料取得</a></li>
+      </ol>
+    </div>
+<section class="section" id="s1">
+  <h2>1. JavaScript 用來做什麼</h2>
+  <p class="desc">JS 是瀏覽器內建腳本語言：操控網頁互動、動態更新畫面、處理事件、與伺服器交換資料，也能在 Node.js 當後端。</p>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><span></span><a href="#topAnchor">回到目錄</a><a href="#s2">下一節 →</a></div>
+</section>
+<section class="section" id="s2">
+  <h2>2. JavaScript 基本功能</h2>
+  <p class="desc">宣告變數、條件、迴圈、函式、事件監聽、非同步（Promise/async/await）、與 DOM 操作。</p>
+  <pre><code>function sum(n){ let s=0; for(let i=1;i<=n;i++) s+=i; return s; }</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s1">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s3">下一節 →</a></div>
+</section>
+<section class="section" id="s3">
+  <h2>3. 深入理解 JavaScript 資料型態 (Data Types)</h2>
+  <p class="desc">原始型別：Number、String、Boolean、Null、Undefined、Symbol、BigInt；物件型別：Object、Array、Function、Date、RegExp…</p>
+  <pre><code>// typeof / Array.isArray 等快速觀察型別
+console.log(typeof 123, typeof 'hi', typeof true, typeof undefined);
+console.log(typeof null, typeof Symbol(), typeof 1n);
+console.log(Array.isArray([]), typeof {});</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s2">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s4">下一節 →</a></div>
+</section>
+<section class="section" id="s4">
+  <h2>4. javascript的資料型態有哪些</h2>
+  <p class="desc">快速表列與 typeof 範例。</p>
+  <pre><code>// typeof / Array.isArray 等快速觀察型別
+console.log(typeof 123, typeof 'hi', typeof true, typeof undefined);
+console.log(typeof null, typeof Symbol(), typeof 1n);
+console.log(Array.isArray([]), typeof {});</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s3">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s5">下一節 →</a></div>
+</section>
+<section class="section" id="s5">
+  <h2>5. javascript字串處理</h2>
+  <p class="desc">字串不可變；索引、長度、取子字串與搜尋。</p>
+  <pre><code>const s=' Hello JavaScript ';
+console.log(s.length, s.trim().toUpperCase(), s.includes('Java'), s.slice(1,6));</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s4">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s6">下一節 →</a></div>
+</section>
+<section class="section" id="s6">
+  <h2>6. Javascript 字串處理函式</h2>
+  <p class="desc">常用：slice/substring/substr、indexOf/includes、startsWith/endsWith、toUpperCase/toLowerCase、trim、split/join、replace/replaceAll。</p>
+  <pre><code>const s=' Hello JavaScript ';
+console.log(s.length, s.trim().toUpperCase(), s.includes('Java'), s.slice(1,6));</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s5">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s7">下一節 →</a></div>
+</section>
+<section class="section" id="s7">
+  <h2>7. JavaScript 數值函數介紹。</h2>
+  <p class="desc">Math：abs/floor/ceil/round/max/min/random/pow/sqrt/trig…</p>
+  <pre><code>console.log(Math.abs(-7), Math.ceil(3.2), Math.floor(3.8), Math.max(3,9,5), Math.random().toFixed(3));</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s6">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s8">下一節 →</a></div>
+</section>
+<section class="section" id="s8">
+  <h2>8. javascript數值函式</h2>
+  <p class="desc">補充：Number() 轉型、parseInt/parseFloat、isNaN、Number.isInteger、toFixed/toPrecision。</p>
+  <pre><code>console.log(Number('3.14'), parseInt('08',10), isNaN('x'/3));</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s7">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s9">下一節 →</a></div>
+</section>
+<section class="section" id="s9">
+  <h2>9. javascript 有關陣列宣告處理和應用</h2>
+  <p class="desc">陣列：push/pop/shift/unshift、forEach/map/filter/reduce/some/every、find/findIndex、includes、slice/splice。</p>
+  <pre><code>const arr=[3,6,5,2]; const squared=arr.map(x=>x*x); const evens=arr.filter(x=>x%2===0); const sum=arr.reduce((a,b)=>a+b,0);</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s8">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s10">下一節 →</a></div>
+</section>
+<section class="section" id="s10">
+  <h2>10. Java script的陣列(Array)</h2>
+  <p class="desc">多維陣列、展開運算子（...）、解構賦值、深拷貝 vs 淺拷貝。</p>
+  <pre><code>const arr=[3,6,5,2]; const squared=arr.map(x=>x*x); const evens=arr.filter(x=>x%2===0); const sum=arr.reduce((a,b)=>a+b,0);</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s9">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s11">下一節 →</a></div>
+</section>
+<section class="section" id="s11">
+  <h2>11. JavaScript 迴圈的用法說明及使用</h2>
+  <p class="desc">for、while、do...while、for...of、for...in，與 break/continue。</p>
+  <pre><code>for (let i=0;i<3;i++) console.log('i=',i);
+for (const v of ['a','b']) console.log(v);</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s10">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s12">下一節 →</a></div>
+</section>
+<section class="section" id="s12">
+  <h2>12. JavaScript 迴圈應用</h2>
+  <p class="desc">迴圈應用：巢狀、提前結束條件。</p>
+  <pre><code>for (let i=0;i<3;i++) console.log('i=',i);
+for (const v of ['a','b']) console.log(v);</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s11">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s13">下一節 →</a></div>
+</section>
+<section class="section" id="s13">
+  <h2>13. JavaScript if用法</h2>
+  <p class="desc">if/else if/else、三元運算子、guard clauses。</p>
+  <pre><code>const score=78; const level=score>=60 ? '及格' : '不及格';</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s12">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s14">下一節 →</a></div>
+</section>
+<section class="section" id="s14">
+  <h2>14. switch用法有哪些及說明</h2>
+  <p class="desc">switch/case/default、break、合併多 case、改寫成查表。</p>
+  <pre><code>const day=5; let type='';
+switch(day){ case 1: case 2: case 3: type='平日'; break; case 6: case 7: type='週末'; break; default: type='其他'; }</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s13">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s15">下一節 →</a></div>
+</section>
+<section class="section" id="s15">
+  <h2>15. Java script的sort排序及演算法</h2>
+  <p class="desc">Array.sort 比較函式、數字/字串排序、穩定性、常見排序演算法。</p>
+  <pre><code>const nums=[13,2,7,19,8]; nums.sort((a,b)=>a-b);</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s14">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s16">下一節 →</a></div>
+</section>
+<section class="section" id="s16">
+  <h2>16. JavaScript 函式互動學習中心</h2>
+  <p class="desc">函式、箭頭函式、閉包、回呼與高階函式。</p>
+  <pre><code>function makeAdder(x){ return y=>x+y; } const add5=makeAdder(5); console.log(add5(3));</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s15">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s17">下一節 →</a></div>
+</section>
+<section class="section" id="s17">
+  <h2>17. JavaScript Canvas 入門示範教學</h2>
+  <p class="desc">Canvas 2D：context、線條與圓形、填色、requestAnimationFrame。</p>
+  <div class="grid-2">
+    <div><pre><code>const c=document.getElementById('cv'); const ctx=c.getContext('2d'); ctx.fillStyle='#4f46e5'; ctx.fillRect(10,10,80,40); ctx.beginPath(); ctx.arc(120,30,20,0,Math.PI*2); ctx.fillStyle='#06b6d4'; ctx.fill();</code></pre></div>
+    <div style="padding:6px 0;">
+      <button class="btn" onclick="(function(){ const c=document.getElementById('cv'); const ctx=c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height); ctx.fillStyle='#4f46e5'; ctx.fillRect(10,10,80,40); ctx.beginPath(); ctx.arc(120,30,20,0,Math.PI*2); ctx.fillStyle='#06b6d4'; ctx.fill(); })()">執行範例</button>
+      <div><canvas id="cv" width="220" height="100" style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 6px 16px rgba(0,0,0,.05)"></canvas></div>
+    </div>
+  </div>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s16">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s18">下一節 →</a></div>
+</section>
+<section class="section" id="s18">
+  <h2>18. Javascript的正則表示式如何用擧例</h2>
+  <p class="desc">RegExp：test()/match()/replace()，常見模式（Email/手機/數字）。</p>
+  <pre><code>const re=/^[^\s@]+@[^\s@]+\.[^\s@]+$/; console.log(re.test('user@example.com'));</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s17">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s19">下一節 →</a></div>
+</section>
+<section class="section" id="s19">
+  <h2>19. Javascript Json物件的使用介紹</h2>
+  <p class="desc">JSON 格式與用途、與 JS 物件差異。</p>
+  <pre><code>const obj={name:'梅枝',score:95}; const json=JSON.stringify(obj); const obj2=JSON.parse(json);</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s18">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s20">下一節 →</a></div>
+</section>
+<section class="section" id="s20">
+  <h2>20. JavaScript json物件使用方法</h2>
+  <p class="desc">JSON.stringify / JSON.parse，取代函式與縮排。</p>
+  <pre><code>const obj={name:'梅枝',score:95}; const json=JSON.stringify(obj); const obj2=JSON.parse(json);</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s19">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s21">下一節 →</a></div>
+</section>
+<section class="section" id="s21">
+  <h2>21. 什麼是jQuery?</h2>
+  <p class="desc">jQuery 的角色與現況（舊專案仍常見）。</p>
+  <pre><code>/* 傳統：$('#id').text('...') / $.ajax(...)
+   現代：document.querySelector('#id').textContent='...'
+   或用框架（React/Vue/Svelte） */</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s20">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s22">下一節 →</a></div>
+</section>
+<section class="section" id="s22">
+  <h2>22. jQuery如何使用?及說明</h2>
+  <p class="desc">CDN 引入與常見操作：選取、事件、文字/屬性、AJAX。</p>
+  <pre><code>/*
+<script src='https://code.jquery.com/jquery-3.7.1.min.js'></script>
+<script>$(function(){ $('#title').text('Hello jQuery'); });</script>
+*/</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s21">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s23">下一節 →</a></div>
+</section>
+<section class="section" id="s23">
+  <h2>23. avaScript 如何開啟其他網頁</h2>
+  <p class="desc">window.open、location.href、<a> 的 target；注意阻擋策略。</p>
+  <pre><code>// location.href='https://example.com';
+// window.open('https://example.com','_blank');</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s22">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s24">下一節 →</a></div>
+</section>
+<section class="section" id="s24">
+  <h2>24. 使用Java script 寫一個爬蟲程式</h2>
+  <p class="desc">同源限制下的同網域 BFS；伺服端可用 cheerio/puppeteer。</p>
+  <pre><code>async function fetchHTML(url){ const res=await fetch(url); const html=await res.text(); const doc=new DOMParser().parseFromString(html,'text/html'); return { title: doc.querySelector('title')?.textContent || '(無標題)', links: [...doc.querySelectorAll('a[href]')].map(a=>a.href) }; }</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s23">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s25">下一節 →</a></div>
+</section>
+<section class="section" id="s25">
+  <h2>25. JavaScript 爬蟲示範</h2>
+  <p class="desc">同網域爬蟲最小範例。</p>
+  <pre><code>async function fetchHTML(url){ const res=await fetch(url); const html=await res.text(); const doc=new DOMParser().parseFromString(html,'text/html'); return { title: doc.querySelector('title')?.textContent || '(無標題)', links: [...doc.querySelectorAll('a[href]')].map(a=>a.href) }; }</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s24">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s26">下一節 →</a></div>
+</section>
+<section class="section" id="s26">
+  <h2>26. 做出一個React計數器</h2>
+  <p class="desc">以 CDN 實作 React 計數器元件。</p>
+  <pre><code>/* React CDN 計數器（示意）
+<script src='https://unpkg.com/react@18/umd/react.development.js'></script>
+<script src='https://unpkg.com/react-dom@18/umd/react-dom.development.js'></script>
+<div id='root'></div>
+<script>
+  const e=React.createElement;
+  function Counter(){ const [n,setN]=React.useState(0);
+    return e('div',null,
+      e('p',null,'count = '+n),
+      e('button',{onClick:()=>setN(n+1)},'+1')
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(e(Counter));
+</script>
+*/</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s25">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s27">下一節 →</a></div>
+</section>
+<section class="section" id="s27">
+  <h2>27. Node.js 平行運用的核心做法</h2>
+  <p class="desc">Node 事件迴圈與非阻塞 I/O、worker_threads / cluster。</p>
+  <pre><code>setTimeout(()=>console.log('timer'),0);
+Promise.resolve(1).then(()=>console.log('microtask'));
+console.log('sync');</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s26">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s28">下一節 →</a></div>
+</section>
+<section class="section" id="s28">
+  <h2>28. Node.js的平行運用</h2>
+  <p class="desc">使用 worker_threads 進行計算密集平行化（概念）。</p>
+  <pre><code>/* Node worker_threads（概念）
+const { Worker, isMainThread, parentPort, workerData } = require('node:worker_threads');
+*/</code></pre>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s27">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s29">下一節 →</a></div>
+</section>
+<section class="section" id="s29">
+  <h2>29. JavaScript 的資料輸入與資料取得</h2>
+  <p class="desc">從 <input> 取值、alert 與頁面輸出；對應 js-input-output.html。</p>
+  <pre><code>const s=document.getElementById('john')?.value || '(尚未輸入)';
+const p=document.getElementById('pw')?.value || '(尚未輸入)';
+// document.getElementById('out').textContent='帳號：'+s+'\n密碼：'+p;</code></pre>
+  <div class="note">完整互動頁面：<a class="btn" href="js-input-output.html">js-input-output.html</a></div>
+<div class="practice"><b>小練習：</b>把上方範例貼到瀏覽器 Console 或建立一個 .html 測試頁，修改數值看看輸出有何變化。</div>
+<div class="navbar"><a href="#s28">← 上一節</a><a href="#topAnchor">回到目錄</a><span></span></div>
+</section>
+
+    <hr class="sep">
+    <div class="small">© 戴梅枝 — 本頁提供入門教學與可執行小範例。建議用桌機或橫向平板瀏覽。</div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>打散 + 排序法練習｜梅子的網際網路學習歷程</title>
+  <style>
+    :root{
+      --ink:#1f2937;
+      --muted:#64748b;
+      --bg:#f3f4ff;
+      --panel:#ffffff;
+      --brand:#4f46e5;
+      --accent:#10b981;
+    }
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{
+      font-family:"Microsoft JhengHei",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      line-height:1.8;
+      font-size:16px;
+    }
+    a{color:var(--brand);text-decoration:none;}
+    a:hover{text-decoration:underline;}
+
+    .container{
+      max-width:900px;
+      margin:0 auto;
+      padding:0 16px 26px;
+    }
+
+    header{
+      background:#111827;
+      color:#f9fafb;
+      box-shadow:0 4px 14px rgba(0,0,0,0.35);
+      margin-bottom:20px;
+    }
+    .topbar{
+      max-width:900px;
+      margin:0 auto;
+      padding:10px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .brand-title{
+      font-size:18px;
+      font-weight:700;
+    }
+    .brand-sub{
+      font-size:13px;
+      color:#9ca3af;
+    }
+    .top-left{
+      display:flex;
+      flex-direction:column;
+    }
+    .btn-home{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid #4b5563;
+      color:#e5e7eb;
+      font-size:14px;
+      text-decoration:none;
+      background:#030712;
+    }
+    .btn-home:hover{
+      background:#111827;
+    }
+
+    .hero{
+      background:radial-gradient(circle at top left,#e0f2fe,#fef3c7 45%,#fee2e2);
+      padding:20px 0 10px;
+      margin-bottom:10px;
+      border-bottom:1px solid #e5e7eb;
+    }
+    .hero-inner{
+      max-width:900px;
+      margin:0 auto;
+      padding:0 16px;
+    }
+    .hero-title{
+      font-size:26px;
+      font-weight:800;
+      margin:0 0 6px;
+    }
+    .hero-desc{
+      font-size:15px;
+      color:var(--muted);
+      margin:0 0 8px;
+    }
+    .hero-note{
+      font-size:14px;
+      color:#4b5563;
+    }
+
+    main{
+      padding-top:4px;
+    }
+    .card{
+      background:var(--panel);
+      border:1px solid #e5e7eb;
+      border-radius:14px;
+      padding:16px 18px;
+      margin-top:12px;
+      box-shadow:0 8px 18px rgba(15,23,42,0.07);
+    }
+    .card h2{
+      margin-top:0;
+      margin-bottom:6px;
+      font-size:20px;
+    }
+    .card p{
+      margin:4px 0 10px;
+      color:var(--muted);
+    }
+
+    label{
+      display:block;
+      margin:8px 0 4px;
+      font-weight:600;
+    }
+    input[type="text"]{
+      width:100%;
+      padding:6px 8px;
+      border-radius:6px;
+      border:1px solid #d1d5db;
+      font-size:15px;
+    }
+    button{
+      margin-top:10px;
+      padding:6px 14px;
+      cursor:pointer;
+      border-radius:999px;
+      border:1px solid transparent;
+      background:var(--brand);
+      color:#fff;
+      font-size:14px;
+      font-weight:600;
+      box-shadow:0 6px 14px rgba(79,70,229,0.35);
+    }
+    button:hover{
+      transform:translateY(-1px);
+      box-shadow:0 8px 18px rgba(79,70,229,0.4);
+    }
+
+    .result-label{
+      font-weight:700;
+      margin-top:10px;
+    }
+    .result-line{
+      margin-left:4px;
+      color:#111827;
+      font-weight:500;
+      min-height:1.2em;
+      display:inline-block;
+    }
+
+    .note{
+      margin-top:14px;
+      background:#f0f9ff;
+      border-left:4px solid #0ea5e9;
+      padding:8px 10px;
+      border-radius:10px;
+      font-size:14px;
+      color:#0369a1;
+    }
+    .homework{
+      margin-top:16px;
+      background:#ecfdf5;
+      border-left:4px solid #22c55e;
+      padding:10px 12px;
+      border-radius:10px;
+      font-size:14px;
+      color:#166534;
+    }
+    .homework-title{
+      font-weight:700;
+      margin-bottom:4px;
+    }
+    .homework ul{
+      margin:4px 0 0 18px;
+      padding:0;
+    }
+    .homework li{
+      margin-bottom:4px;
+    }
+
+    .back-home{
+      margin-top:18px;
+      text-align:center;
+      font-size:14px;
+    }
+    .back-home a{
+      text-decoration:none;
+      color:#4f46e5;
+      font-weight:600;
+    }
+
+    @media (max-width:600px){
+      .hero-title{font-size:22px;}
+      .card{padding:14px 14px;}
+    }
+  </style>
+  <script>
+    function shuffleAndSort() {
+      const input = document.getElementById("numbersInput");
+      const raw = input.value.trim();
+
+      if (!raw) {
+        alert("請先輸入一串數字喔！");
+        input.focus();
+        return;
+      }
+
+      // 將輸入字串依逗號或空白分割
+      const parts = raw.split(/[,\s]+/).filter(Boolean);
+      const nums = [];
+      for (let p of parts) {
+        const n = Number(p);
+        if (Number.isNaN(n)) {
+          alert("包含無法轉成數字的內容：「" + p + "」，請重新輸入。");
+          input.focus();
+          return;
+        }
+        nums.push(n);
+      }
+
+      if (nums.length === 0) {
+        alert("請至少輸入 1 個數字喔！");
+        input.focus();
+        return;
+      }
+
+      // 原始順序
+      const original = nums.slice();
+      document.getElementById("original").textContent = original.join(" , ");
+
+      // 打散（Fisher-Yates）
+      const shuffled = original.slice();
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const r = Math.floor(Math.random() * (i + 1));
+        const tmp = shuffled[i];
+        shuffled[i] = shuffled[r];
+        shuffled[r] = tmp;
+      }
+      document.getElementById("shuffled").textContent = shuffled.join(" , ");
+
+      // 由小到大排序（從原始資料排序）
+      const asc = original.slice().sort((a,b) => a - b);
+      document.getElementById("asc").textContent = asc.join(" , ");
+
+      // 由大到小排序
+      const desc = original.slice().sort((a,b) => b - a);
+      document.getElementById("desc").textContent = desc.join(" , ");
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div class="top-left">
+        <div class="brand-title">梅子的網際網路學習歷程</div>
+        <div class="brand-sub">JavaScript 打散 + 排序法 練習頁</div>
+      </div>
+      <a class="btn-home" href="index.html">← 回首頁</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <h1 class="hero-title">打散 + 排序法練習</h1>
+      <p class="hero-desc">
+        這一頁示範如何把一組數字先「打散」，再做「由小到大」與「由大到小」排序。
+      </p>
+      <p class="hero-note">
+        練習重點：陣列的複製、Fisher-Yates 洗牌、Array.sort() 的比較函式（a - b / b - a）。
+      </p>
+    </div>
+  </section>
+
+  <main>
+    <div class="container">
+      <div class="card">
+        <h2>互動練習：打散 + 由小到大 / 由大到小排序</h2>
+        <p>請輸入一串數字，例如：<code>8, 3, 15, 2, 10</code>，然後按下按鈕看看結果。</p>
+
+        <label for="numbersInput">1. 請輸入一串數字（可用逗號或空白分隔）：</label>
+        <input type="text" id="numbersInput" placeholder="例如：8, 3, 15, 2, 10">
+
+        <button onclick="shuffleAndSort()">開始打散與排序</button>
+
+        <div class="result-label">2. 原始順序：</div>
+        <span id="original" class="result-line"></span>
+
+        <div class="result-label">3. 打散後順序（洗牌結果）：</div>
+        <span id="shuffled" class="result-line"></span>
+
+        <div class="result-label">4. 由小到大排序：</div>
+        <span id="asc" class="result-line"></span>
+
+        <div class="result-label">5. 由大到小排序：</div>
+        <span id="desc" class="result-line"></span>
+
+        <div class="note">
+          提醒：如果沒有提供比較函式，<code>Array.sort()</code> 會把數字當「字串」排序，
+          例如 <code>[2, 13, 6]</code> 會變成 <code>[13, 2, 6]</code>。  
+          正確作法是加上 <code>(a, b) =&gt; a - b</code> 或 <code>b - a</code>。
+        </div>
+
+        <div class="homework">
+          <div class="homework-title">延伸作業題目：</div>
+          <ul>
+            <li>讓使用者勾選「是否要移除重複數字」，如果有勾選，就取消重複值再排序。</li>
+            <li>計算這組數字的「最大值、最小值、平均值」，顯示在畫面下方。</li>
+            <li>試著把打散的步驟改成「每次重新按下按鈕時，只顯示打散與排序結果，不改變原始輸入」。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="back-home">
+        <a href="index.html">⬅ 回首頁（回到教學網站首頁）</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

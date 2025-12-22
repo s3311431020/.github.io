@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>打散程式練習｜梅子的網際網路學習歷程</title>
+  <style>
+    :root{
+      --ink:#1f2937;
+      --muted:#64748b;
+      --bg:#f3f4ff;
+      --panel:#ffffff;
+      --brand:#4f46e5;
+      --accent:#10b981;
+    }
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{
+      font-family:"Microsoft JhengHei",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      line-height:1.8;
+      font-size:16px;
+    }
+    a{color:var(--brand);text-decoration:none;}
+    a:hover{text-decoration:underline;}
+
+    .container{
+      max-width:900px;
+      margin:0 auto;
+      padding:0 16px 26px;
+    }
+
+    header{
+      background:#111827;
+      color:#f9fafb;
+      box-shadow:0 4px 14px rgba(0,0,0,0.35);
+      margin-bottom:20px;
+    }
+    .topbar{
+      max-width:900px;
+      margin:0 auto;
+      padding:10px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .brand-title{
+      font-size:18px;
+      font-weight:700;
+    }
+    .brand-sub{
+      font-size:13px;
+      color:#9ca3af;
+    }
+    .top-left{
+      display:flex;
+      flex-direction:column;
+    }
+    .btn-home{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid #4b5563;
+      color:#e5e7eb;
+      font-size:14px;
+      text-decoration:none;
+      background:#030712;
+    }
+    .btn-home:hover{
+      background:#111827;
+    }
+
+    .hero{
+      background:radial-gradient(circle at top left,#e0f2fe,#fef3c7 45%,#fee2e2);
+      padding:20px 0 10px;
+      margin-bottom:10px;
+      border-bottom:1px solid #e5e7eb;
+    }
+    .hero-inner{
+      max-width:900px;
+      margin:0 auto;
+      padding:0 16px;
+    }
+    .hero-title{
+      font-size:26px;
+      font-weight:800;
+      margin:0 0 6px;
+    }
+    .hero-desc{
+      font-size:15px;
+      color:var(--muted);
+      margin:0 0 8px;
+    }
+    .hero-note{
+      font-size:14px;
+      color:#4b5563;
+    }
+
+    main{
+      padding-top:4px;
+    }
+    .card{
+      background:var(--panel);
+      border:1px solid #e5e7eb;
+      border-radius:14px;
+      padding:16px 18px;
+      margin-top:12px;
+      box-shadow:0 8px 18px rgba(15,23,42,0.07);
+    }
+    .card h2{
+      margin-top:0;
+      margin-bottom:6px;
+      font-size:20px;
+    }
+    .card p{
+      margin:4px 0 10px;
+      color:var(--muted);
+    }
+
+    label{
+      display:inline-block;
+      margin:8px 0;
+      font-weight:600;
+    }
+    input[type="number"]{
+      width:120px;
+      padding:4px 6px;
+      border-radius:6px;
+      border:1px solid #d1d5db;
+      font-size:15px;
+    }
+    button{
+      padding:6px 14px;
+      margin-left:8px;
+      cursor:pointer;
+      border-radius:999px;
+      border:1px solid transparent;
+      background:var(--brand);
+      color:#fff;
+      font-size:14px;
+      font-weight:600;
+      box-shadow:0 6px 14px rgba(79,70,229,0.35);
+    }
+    button:hover{
+      transform:translateY(-1px);
+      box-shadow:0 8px 18px rgba(79,70,229,0.4);
+    }
+
+    .result-label{
+      font-weight:700;
+      margin-top:10px;
+    }
+    #before,#after,#winners,#maxInfo{
+      display:inline-block;
+      margin-left:4px;
+      color:#111827;
+      font-weight:500;
+      min-height:1.2em;
+    }
+
+    .note{
+      margin-top:14px;
+      background:#f0f9ff;
+      border-left:4px solid #0ea5e9;
+      padding:8px 10px;
+      border-radius:10px;
+      font-size:14px;
+      color:#0369a1;
+    }
+    .homework{
+      margin-top:16px;
+      background:#ecfdf5;
+      border-left:4px solid #22c55e;
+      padding:10px 12px;
+      border-radius:10px;
+      font-size:14px;
+      color:#166534;
+    }
+    .homework-title{
+      font-weight:700;
+      margin-bottom:4px;
+    }
+    .homework ul{
+      margin:4px 0 0 18px;
+      padding:0;
+    }
+    .homework li{
+      margin-bottom:4px;
+    }
+
+    .back-home{
+      margin-top:18px;
+      text-align:center;
+      font-size:14px;
+    }
+    .back-home a{
+      text-decoration:none;
+      color:var(--brand);
+      font-weight:600;
+    }
+
+    @media (max-width:600px){
+      .hero-title{font-size:22px;}
+      .card{padding:14px 14px;}
+    }
+  </style>
+  <script>
+    function shuffleNumbers() {
+      const input = document.getElementById("countInput");
+      const n = parseInt(input.value);
+
+      if (isNaN(n) || n <= 0) {
+        alert("請輸入大於 0 的整數喔！");
+        input.focus();
+        return;
+      }
+
+      // 建立 1 ~ n 的陣列
+      let arr = [];
+      for (let i = 0; i < n; i++) {
+        arr[i] = i + 1;
+      }
+
+      // 顯示打散前排序
+      document.getElementById("before").textContent = arr.join(" , ");
+
+      // 使用 Fisher-Yates 演算法打散
+      for (let i = 0; i < n - 1; i++) {
+        const r = Math.floor(Math.random() * (n - i)); // 0 ~ (n - i - 1)
+        const temp = arr[n - 1 - i];
+        arr[n - 1 - i] = arr[r];
+        arr[r] = temp;
+      }
+
+      // 顯示打散後排序
+      document.getElementById("after").textContent = arr.join(" , ");
+
+      // 抽中的 3 位數字（從打散後陣列的前 3 個挑出）
+      const winnersCount = Math.min(3, n); // 如果 n < 3，就顯示實際數量
+      const winners = arr.slice(0, winnersCount);
+      document.getElementById("winners").textContent = winners.join(" , ");
+
+      // 找出最大值及位置（在打散後陣列中的第幾個位置）
+      let maxVal = arr[0];
+      let maxIndex = 0;
+      for (let i = 1; i < arr.length; i++) {
+        if (arr[i] > maxVal) {
+          maxVal = arr[i];
+          maxIndex = i;
+        }
+      }
+      document.getElementById("maxInfo").textContent =
+        "最大值 = " + maxVal + "（在打散後排序的第 " + (maxIndex + 1) + " 個位置）";
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div class="top-left">
+        <div class="brand-title">梅子的網際網路學習歷程</div>
+        <div class="brand-sub">JavaScript 打散（洗牌）演算法練習頁</div>
+      </div>
+      <a class="btn-home" href="index.html">← 回首頁</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <h1 class="hero-title">打散程式練習（Fisher-Yates 洗牌）</h1>
+      <p class="hero-desc">
+        這一頁示範如何用 JavaScript 把一串數字「打散」，也就是常說的「洗牌」，
+        並從中抽出 3 個號碼與找出最大值的位置。
+      </p>
+      <p class="hero-note">
+        建議先學過：陣列（Array）、for 迴圈、Math.random()。
+        可以搭配 <a href="js-course.html">JavaScript 完整入門課程</a> 的陣列單元使用。
+      </p>
+    </div>
+  </section>
+
+  <main>
+    <div class="container">
+      <div class="card">
+        <h2>互動練習：打散、抽獎、找最大值</h2>
+        <p>步驟：輸入一個整數 n，按下「開始打散」，觀察打散前後的順序、抽出的號碼，以及最大值出現在第幾個位置。</p>
+
+        <label for="countInput">1. 請輸入想要幾個數值：</label>
+        <input type="number" id="countInput" min="1" value="6">
+        <button onclick="shuffleNumbers()">開始打散</button>
+
+        <div class="result-label">2. 打散前排序：</div>
+        <span id="before"></span>
+
+        <div class="result-label">3. 打散後排序：</div>
+        <span id="after"></span>
+
+        <div class="result-label">4. 抽中的 3 位數字：</div>
+        <span id="winners"></span>
+
+        <div class="result-label">5. 找出最大值及位置：</div>
+        <span id="maxInfo"></span>
+
+        <div class="note">
+          提示：這裡的「最大值」指的是打散後陣列中的最大數字，
+          「位置」則是這個數字在打散後陣列中排第幾個（從 1 開始計算）。
+        </div>
+
+        <div class="homework">
+          <div class="homework-title">延伸作業題目（可以給學生練習）：</div>
+          <ul>
+            <li>改成同時找出「最小值」與其在陣列中的位置，顯示在畫面下方。</li>
+            <li>把「抽中的 3 位數字」改成不固定，可以讓使用者自行輸入要抽幾位。</li>
+            <li>在畫面下方新增「歷史紀錄」，每次按下「開始打散」就把結果（打散後排序、最大值與位置）記錄起來。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="back-home">
+        <a href="index.html">⬅ 回首頁（回到教學網站首頁）</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
