@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HTML 基礎與網頁結構｜梅子的網際網路學習歷程</title>
+  <style>:root{--ink:#1f2937;--muted:#64748b;--bg:#f6f7fb;--panel:#fff;--brand:#4f46e5}
+*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{font-family:Arial,"微軟正黑體",system-ui,-apple-system,Segoe UI,Roboto,Noto Sans,"Helvetica Neue",sans-serif;color:var(--ink);background:var(--bg);line-height:1.75;font-size:16px}
+header{max-width:1100px;margin:22px auto 8px;padding:0 16px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+a{color:var(--brand);text-decoration:none}a:hover{text-decoration:underline}
+main{max-width:1100px;margin:10px auto 40px;padding:0 16px}
+.hero{background:linear-gradient(135deg,#eef2ff,#f8fafc);border:1px solid #e5e7eb;border-radius:16px;padding:16px 18px;box-shadow:0 12px 26px rgba(0,0,0,.06)}
+.toc{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:12px 14px;margin:14px 0;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+.toc h3{margin:6px 0 8px}.toc ol{columns:2;column-gap:18px;padding-left:20px;margin:0}@media (max-width:760px){.toc ol{columns:1}}
+.section{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px 18px;margin:14px 0;box-shadow:0 8px 18px rgba(0,0,0,.06)}
+.section h2{margin:0 0 8px}.section .desc{color:var(--muted);margin-top:4px;font-size:15px}
+pre{background:#020617;color:#e5e7eb;padding:10px 12px;border-radius:10px;overflow:auto;font-size:14px}code{color:#e5e7ff;font-family:Consolas,Menlo,monospace;background:rgba(15,23,42,.4);padding:1px 4px;border-radius:4px}
+.btn{display:inline-block;padding:8px 12px;border:1px solid #d1d5db;border-radius:10px;background:#fff;font-weight:600;cursor:pointer;font-size:14px}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,0,0,.08)}
+.badge{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;border:1px solid #c7d2fe;background:#eef2ff;color:#3730a3;margin-left:6px}
+.note{background:#f8fafc;border-left:6px solid #93c5fd;padding:8px 10px;border-radius:8px;margin:8px 0;font-size:14px}
+.small{font-size:14px;color:var(--muted)}hr.sep{border:none;height:1px;background:linear-gradient(90deg,transparent,#e5e7eb,transparent);margin:20px 0}
+.navbar{display:flex;justify-content:space-between;gap:8px;margin-top:12px}
+.navbar a{display:inline-block;padding:8px 12px;border:1px solid #d1d5db;border-radius:10px;background:#fff;font-weight:600;font-size:14px}
+.navbar a:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,0,0,.08)}
+.practice{background:#f0fdf4;border:1px dashed #86efac;border-radius:10px;padding:8px 10px;margin-top:10px;font-size:14px}
+#topAnchor{position:relative;top:-12px}</style>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <h1>HTML 基礎與網頁結構課程 <span class="badge">適合初學者</span></h1>
+      <a class="btn" href="index.html">← 回到首頁</a>
+    </div>
+  </header>
+  <main>
+    <div id="topAnchor"></div>
+    <div class="hero">
+      <p>這個頁面帶你從零開始認識 HTML：從最基本的標籤、網頁骨架，到清單、表格、表單與語義化結構，最後還有綜合作業可以當成回家作業或小專題。</p>
+      <div class="note">建議從上到下依序學習；也可以用目錄直接跳到想複習的主題。每一節都有小練習，最後還有綜合作業。</div>
+    </div>
+    <div class="toc">
+      <h3>目錄</h3>
+      <ol>
+        <li><a href="#s1">1. HTML 是什麼？</a></li>
+        <li><a href="#s2">2. 第一個完整網頁骨架</a></li>
+        <li><a href="#s3">3. 常用文字標籤：h1 ~ h6、p、br</a></li>
+        <li><a href="#s4">4. 超連結 a 標籤與 target</a></li>
+        <li><a href="#s5">5. 圖片 img 標籤與 alt 說明</a></li>
+        <li><a href="#s6">6. 清單：ul/ol 與 li</a></li>
+        <li><a href="#s7">7. 表格 table / tr / th / td</a></li>
+        <li><a href="#s8">8. 表單 form 與 input 基本使用</a></li>
+        <li><a href="#s9">9. 區塊元素 div / span 與語義標籤</a></li>
+        <li><a href="#s10">10. 檔案結構與相對路徑</a></li>
+        <li><a href="#s11">11. 綜合作業一：個人學習歷程頁</a></li>
+        <li><a href="#s12">12. 綜合作業二：迷你教學網站骨架</a></li>
+      </ol>
+    </div>
+<section class="section" id="s1">
+  <h2>1. HTML 是什麼？</h2>
+  <p class="desc">用標籤（tag）描述網頁的結構：哪裡是標題、哪裡是段落、哪裡是圖片或連結。</p>
+  <pre><code>&lt;h1&gt;我是大標題&lt;/h1&gt;
+&lt;p&gt;這是一段文字內容。&lt;/p&gt;</code></pre>
+  <div class="practice"><b>小練習：</b>用 h1 與 p 標籤寫出「自我介紹」標題與一小段文字。</div>
+  <div class="navbar"><span></span><a href="#topAnchor">回到目錄</a><a href="#s2">下一節 →</a></div>
+</section>
+<section class="section" id="s2">
+  <h2>2. 第一個完整網頁骨架</h2>
+  <p class="desc">每個 HTML 頁面都會有 doctype、html、head、body 四個主要部分。</p>
+  <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-Hant"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;我的第一個網頁&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;哈囉，HTML！&lt;/h1&gt;
+    &lt;p&gt;這是我的第一個網頁。&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  <div class="practice"><b>小練習：</b>建立一個 new.html 檔，把範例貼上去，改成自己的標題文字後，用瀏覽器打開。</div>
+  <div class="navbar"><a href="#s1">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s3">下一節 →</a></div>
+</section>
+<section class="section" id="s3">
+  <h2>3. 常用文字標籤：h1 ~ h6、p、br</h2>
+  <p class="desc">用標題標籤表達層級，用 p 表示段落，br 則是單純換行。</p>
+  <pre><code>&lt;h1&gt;網站主標題&lt;/h1&gt;
+&lt;h2&gt;章節標題&lt;/h2&gt;
+&lt;p&gt;這是一個段落，裡面可以放很多文字。&lt;br&gt;這一行用 br 換行。&lt;/p&gt;</code></pre>
+  <div class="practice"><b>小練習：</b>做一個包含 h1、h2、p 與 br 的小文章，試著分成兩三個段落。</div>
+  <div class="navbar"><a href="#s2">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s4">下一節 →</a></div>
+</section>
+<section class="section" id="s4">
+  <h2>4. 超連結 a 標籤與 target</h2>
+  <p class="desc">用 a 標籤建立超連結，可以連到其他網站或同一網站的其他頁面。</p>
+  <pre><code>&lt;a href="https://example.com"&gt;到 Example 網站&lt;/a&gt;
+&lt;br&gt;
+&lt;a href="about.html" target="_blank"&gt;在新分頁開啟關於我&lt;/a&gt;</code></pre>
+  <div class="practice"><b>小練習：</b>幫自己的頁面加一個連到 js-course.html 的連結，文字可以寫「前往 JavaScript 課程」。</div>
+  <div class="navbar"><a href="#s3">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s5">下一節 →</a></div>
+</section>
+<section class="section" id="s5">
+  <h2>5. 圖片 img 標籤與 alt 說明</h2>
+  <p class="desc">img 需要 src 指向圖片檔案，並加上 alt 文字方便無法顯示圖片時閱讀。</p>
+  <pre><code>&lt;img src="me.jpg" alt="作者大頭照" width="200"&gt;</code></pre>
+  <div class="practice"><b>小練習：</b>準備一張圖片（檔名自己取），用 img 標籤插入並設定適合的 width 與 alt。</div>
+  <div class="navbar"><a href="#s4">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s6">下一節 →</a></div>
+</section>
+<section class="section" id="s6">
+  <h2>6. 清單：ul/ol 與 li</h2>
+  <p class="desc">列出條列事項時，使用清單標籤讓結構更清楚。</p>
+  <pre><code>&lt;h2&gt;無序清單 (ul)&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;HTML&lt;/li&gt;
+  &lt;li&gt;CSS&lt;/li&gt;
+  &lt;li&gt;JavaScript&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;有序清單 (ol)&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;打開編輯器&lt;/li&gt;
+  &lt;li&gt;撰寫程式碼&lt;/li&gt;
+  &lt;li&gt;存檔並用瀏覽器開啟&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+  <div class="practice"><b>小練習：</b>請幫自己列出「三個最想學會的東西」，用 ul/li 寫出來。</div>
+  <div class="navbar"><a href="#s5">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s7">下一節 →</a></div>
+</section>
+<section class="section" id="s7">
+  <h2>7. 表格 table / tr / th / td</h2>
+  <p class="desc">用表格呈現有欄列結構的資料，例如成績表或價目表。</p>
+  <pre><code>&lt;table border="1"&gt;
+  &lt;tr&gt;
+    &lt;th&gt;姓名&lt;/th&gt;&lt;th&gt;分數&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;小明&lt;/td&gt;&lt;td&gt;95&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;</code></pre>
+  <div class="practice"><b>小練習：</b>練習做一個 3 人的成績表格，包含姓名與分數兩欄。</div>
+  <div class="navbar"><a href="#s6">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s8">下一節 →</a></div>
+</section>
+<section class="section" id="s8">
+  <h2>8. 表單 form 與 input 基本使用</h2>
+  <p class="desc">表單用來收集使用者輸入，之後可以配合 JavaScript 或後端程式處理。</p>
+  <pre><code>&lt;form&gt;
+  帳號：&lt;input type="text" name="user"&gt;&lt;br&gt;
+  密碼：&lt;input type="password" name="pw"&gt;&lt;br&gt;
+  &lt;button type="submit"&gt;送出&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+  <div class="practice"><b>小練習：</b>幫自己做一個「聯絡我」表單，至少包含姓名、Email 和留言三個欄位。</div>
+  <div class="navbar"><a href="#s7">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s9">下一節 →</a></div>
+</section>
+<section class="section" id="s9">
+  <h2>9. 區塊元素 div / span 與語義標籤</h2>
+  <p class="desc">div 通常用來包一塊區域，span 則是一小段行內內容；語義標籤像 header/nav/main/footer 更有意義。</p>
+  <pre><code>&lt;header&gt;網站抬頭&lt;/header&gt;
+&lt;nav&gt;導覽列&lt;/nav&gt;
+&lt;main&gt;
+  &lt;div class="card"&gt;
+    &lt;h2&gt;文章標題&lt;/h2&gt;
+    &lt;p&gt;文章內容文章內容...&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+&lt;footer&gt;版權資訊&lt;/footer&gt;</code></pre>
+  <div class="practice"><b>小練習：</b>試著用 header/nav/main/footer 分出網頁的大區塊，哪怕內容還很少也沒關係。</div>
+  <div class="navbar"><a href="#s8">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s10">下一節 →</a></div>
+</section>
+<section class="section" id="s10">
+  <h2>10. 檔案結構與相對路徑</h2>
+  <p class="desc">學會如何從一個 HTML 檔正確連到同資料夾或子資料夾內的其他檔案。</p>
+  <pre><code>&lt;!-- 同一個資料夾 --&gt;
+&lt;a href="about.html"&gt;關於我&lt;/a&gt;
+
+&lt;!-- 子資料夾 images 裡的圖片 --&gt;
+&lt;img src="images/logo.png" alt="網站 Logo"&gt;</code></pre>
+  <div class="practice"><b>小練習：</b>建立一個 images 資料夾，把圖片放裡面，並在網頁中用正確的相對路徑顯示它。</div>
+  <div class="navbar"><a href="#s9">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s11">下一節 →</a></div>
+</section>
+<section class="section" id="s11">
+  <h2>11. 綜合作業一：個人學習歷程頁</h2>
+  <p class="desc">把前面所有 HTML 元素綜合使用，做出一個介紹「自己學程式的故事」的完整頁面。</p>
+  <pre><code>&lt;h1&gt;我的程式學習歷程&lt;/h1&gt;
+&lt;p&gt;這裡寫下你為什麼開始學寫程式、遇到的困難與成就。&lt;/p&gt;
+&lt;h2&gt;學習時間軸&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;第一次接觸 HTML&lt;/li&gt;
+  &lt;li&gt;開始學 CSS&lt;/li&gt;
+  &lt;li&gt;寫出第一個小作品&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+  <div class="practice"><b>小練習：</b>請學生寫出至少三個小段落，搭配一張圖片與一個連到 index.html 的超連結，完成個人學習歷程頁。</div>
+  <div class="navbar"><a href="#s10">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s12">下一節 →</a></div>
+</section>
+<section class="section" id="s12">
+  <h2>12. 綜合作業二：迷你教學網站骨架</h2>
+  <p class="desc">設計一個只有 HTML 結構的教學網站首頁：包含抬頭、導覽列、主內容區與頁尾。之後可再加上 CSS。</p>
+  <pre><code>&lt;header&gt;
+  &lt;h1&gt;XXX 的教學網站&lt;/h1&gt;
+  &lt;nav&gt;
+    &lt;a href="index.html"&gt;首頁&lt;/a&gt;
+    &lt;a href="html-course.html"&gt;HTML 課程&lt;/a&gt;
+    &lt;a href="css-course.html"&gt;CSS 課程&lt;/a&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;
+&lt;main&gt;
+  &lt;h2&gt;最新公告&lt;/h2&gt;
+  &lt;ul&gt;
+    &lt;li&gt;新增 HTML 課程筆記&lt;/li&gt;
+    &lt;li&gt;即將推出 CSS 教學影片&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/main&gt;
+&lt;footer&gt;© 2025 你的名字&lt;/footer&gt;</code></pre>
+  <div class="practice"><b>小練習：</b>要求學生實作這個骨架並自行修改文字內容，未來再在 CSS 課程中為它加上版型與顏色。</div>
+  <div class="navbar"><a href="#s11">← 上一節</a><a href="#topAnchor">回到目錄</a><span></span></div>
+</section>
+
+    <hr class="sep">
+    <div class="small">© 梅子的網際網路學習歷程 — 本頁為教學與作業示範用，不會蒐集任何資料。</div>
+  </main>
+</body>
+</html>

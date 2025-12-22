@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CSS 樣式與 RWD 版型｜梅子的網際網路學習歷程</title>
+  <style>:root{--ink:#1f2937;--muted:#64748b;--bg:#f6f7fb;--panel:#fff;--brand:#4f46e5}
+*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{font-family:Arial,"微軟正黑體",system-ui,-apple-system,Segoe UI,Roboto,Noto Sans,"Helvetica Neue",sans-serif;color:var(--ink);background:var(--bg);line-height:1.75;font-size:16px}
+header{max-width:1100px;margin:22px auto 8px;padding:0 16px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+a{color:var(--brand);text-decoration:none}a:hover{text-decoration:underline}
+main{max-width:1100px;margin:10px auto 40px;padding:0 16px}
+.hero{background:linear-gradient(135deg,#eef2ff,#f8fafc);border:1px solid #e5e7eb;border-radius:16px;padding:16px 18px;box-shadow:0 12px 26px rgba(0,0,0,.06)}
+.toc{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:12px 14px;margin:14px 0;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+.toc h3{margin:6px 0 8px}.toc ol{columns:2;column-gap:18px;padding-left:20px;margin:0}@media (max-width:760px){.toc ol{columns:1}}
+.section{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px 18px;margin:14px 0;box-shadow:0 8px 18px rgba(0,0,0,.06)}
+.section h2{margin:0 0 8px}.section .desc{color:var(--muted);margin-top:4px;font-size:15px}
+pre{background:#020617;color:#e5e7eb;padding:10px 12px;border-radius:10px;overflow:auto;font-size:14px}code{color:#e5e7ff;font-family:Consolas,Menlo,monospace;background:rgba(15,23,42,.4);padding:1px 4px;border-radius:4px}
+.btn{display:inline-block;padding:8px 12px;border:1px solid #d1d5db;border-radius:10px;background:#fff;font-weight:600;cursor:pointer;font-size:14px}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,0,0,.08)}
+.badge{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;border:1px solid #c7d2fe;background:#eef2ff;color:#3730a3;margin-left:6px}
+.note{background:#f8fafc;border-left:6px solid #93c5fd;padding:8px 10px;border-radius:8px;margin:8px 0;font-size:14px}
+.small{font-size:14px;color:var(--muted)}hr.sep{border:none;height:1px;background:linear-gradient(90deg,transparent,#e5e7eb,transparent);margin:20px 0}
+.navbar{display:flex;justify-content:space-between;gap:8px;margin-top:12px}
+.navbar a{display:inline-block;padding:8px 12px;border:1px solid #d1d5db;border-radius:10px;background:#fff;font-weight:600;font-size:14px}
+.navbar a:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,0,0,.08)}
+.practice{background:#f0fdf4;border:1px dashed #86efac;border-radius:10px;padding:8px 10px;margin-top:10px;font-size:14px}
+#topAnchor{position:relative;top:-12px}</style>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <h1>CSS 樣式與 RWD 版型課程 <span class="badge">適合初學者</span></h1>
+      <a class="btn" href="index.html">← 回到首頁</a>
+    </div>
+  </header>
+  <main>
+    <div id="topAnchor"></div>
+    <div class="hero">
+      <p>這個頁面帶你從零開始掌握 CSS：從文字、顏色、盒模型，到 Flexbox 與 media query，最後有兩個綜合作業，幫助你實作真正的 RWD 版面。</p>
+      <div class="note">建議從上到下依序學習；也可以用目錄直接跳到想複習的主題。每一節都有小練習，最後還有綜合作業。</div>
+    </div>
+    <div class="toc">
+      <h3>目錄</h3>
+      <ol>
+        <li><a href="#s1">1. CSS 是什麼？與三種寫法</a></li>
+        <li><a href="#s2">2. 選擇器：標籤、class、id</a></li>
+        <li><a href="#s3">3. 文字與字型設定</a></li>
+        <li><a href="#s4">4. 顏色與背景</a></li>
+        <li><a href="#s5">5. 邊框、圓角與陰影</a></li>
+        <li><a href="#s6">6. 盒模型：margin、padding、width、height</a></li>
+        <li><a href="#s7">7. display：block / inline / inline-block</a></li>
+        <li><a href="#s8">8. Flexbox：讓排版變簡單</a></li>
+        <li><a href="#s9">9. RWD：media query 基本用法</a></li>
+        <li><a href="#s10">10. 小專題：兩欄版型 + RWD</a></li>
+        <li><a href="#s11">11. 綜合作業一：三欄卡片 + 手機一欄</a></li>
+        <li><a href="#s12">12. 綜合作業二：完成教學網站首頁樣式</a></li>
+      </ol>
+    </div>
+<section class="section" id="s1">
+  <h2>1. CSS 是什麼？與三種寫法</h2>
+  <p class="desc">用來控制網頁外觀的樣式表，可以寫在行內、&lt;style&gt; 標籤裡，或獨立成 .css 檔。</p>
+  <pre><code>&lt;!-- 行內樣式（不推薦大量使用） --&gt;
+&lt;p style="color:red;"&gt;紅色文字&lt;/p&gt;
+
+&lt;!-- &lt;head&gt; 內的 &lt;style&gt; --&gt;
+&lt;style&gt;
+  p { color: blue; }
+&lt;/style&gt;
+
+&lt;!-- 外部樣式檔 --&gt;
+&lt;link rel="stylesheet" href="style.css"&gt;</code></pre>
+  <div class="practice"><b>小練習：</b>建立 style.css，試著把 body 的背景色改成淡淡的淺灰色。</div>
+  <div class="navbar"><span></span><a href="#topAnchor">回到目錄</a><a href="#s2">下一節 →</a></div>
+</section>
+<section class="section" id="s2">
+  <h2>2. 選擇器：標籤、class、id</h2>
+  <p class="desc">用選擇器決定哪些元素要套用哪些樣式。</p>
+  <pre><code>/* 標籤選擇器 */
+h1 { color: #1d4ed8; }
+
+/* 類別選擇器（class） */
+.highlight { background-color: #fef3c7; }
+
+/* ID 選擇器 */
+#main-title { font-size: 32px; }</code></pre>
+  <div class="practice"><b>小練習：</b>為頁面中的某一段文字加上一個 class，例如 highlight，並讓它有漂亮的背景色。</div>
+  <div class="navbar"><a href="#s1">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s3">下一節 →</a></div>
+</section>
+<section class="section" id="s3">
+  <h2>3. 文字與字型設定</h2>
+  <p class="desc">調整字體家族、大小、行距與字重，讓文字更容易閱讀。</p>
+  <pre><code>body {
+  font-family: "微軟正黑體", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+h1 {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+small {
+  font-size: 12px;
+}</code></pre>
+  <div class="practice"><b>小練習：</b>試著把整個網頁的字體改成你喜歡的字型，並觀察不同字重的效果。</div>
+  <div class="navbar"><a href="#s2">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s4">下一節 →</a></div>
+</section>
+<section class="section" id="s4">
+  <h2>4. 顏色與背景</h2>
+  <p class="desc">可以用色碼、rgb、rgba 或關鍵字設定字色與背景色。</p>
+  <pre><code>h1 {
+  color: #dc2626;           /* 紅色標題 */
+}
+
+body {
+  background-color: #f9fafb; /* 淺灰背景 */
+}
+
+.box {
+  background: linear-gradient(135deg,#bfdbfe,#fecaca);
+}</code></pre>
+  <div class="practice"><b>小練習：</b>替你的頁面做一個有漸層背景色的區塊，裡面放一個標題與一小段文字。</div>
+  <div class="navbar"><a href="#s3">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s5">下一節 →</a></div>
+</section>
+<section class="section" id="s5">
+  <h2>5. 邊框、圓角與陰影</h2>
+  <p class="desc">讓區塊看起來像卡片：加邊框、圓角、陰影。</p>
+  <pre><code>.card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(15,23,42,0.08);
+  padding: 16px;
+  background-color: #ffffff;
+}</code></pre>
+  <div class="practice"><b>小練習：</b>幫你的個人名片區塊套用 .card 樣式，讓它看起來像一張實體名片。</div>
+  <div class="navbar"><a href="#s4">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s6">下一節 →</a></div>
+</section>
+<section class="section" id="s6">
+  <h2>6. 盒模型：margin、padding、width、height</h2>
+  <p class="desc">每個元素都是一個盒子：內容 + 內距 + 邊框 + 外距。</p>
+  <pre><code>.box {
+  width: 300px;
+  padding: 16px;   /* 內容與邊框之間 */
+  margin: 20px;    /* 元件與元件之間 */
+  border: 1px solid #d1d5db;
+}</code></pre>
+  <div class="practice"><b>小練習：</b>建立兩個 .box 區塊，調整 padding 與 margin，感受版面變化。</div>
+  <div class="navbar"><a href="#s5">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s7">下一節 →</a></div>
+</section>
+<section class="section" id="s7">
+  <h2>7. display：block / inline / inline-block</h2>
+  <p class="desc">決定元素如何在一行中排列，會不會自動換行。</p>
+  <pre><code>h1 { display: block; }
+span { display: inline; }
+
+.button {
+  display: inline-block;
+  padding: 8px 12px;
+  background: #4f46e5;
+  color: white;
+  border-radius: 999px;
+}</code></pre>
+  <div class="practice"><b>小練習：</b>用 a 標籤搭配 .button 樣式做出一個「前往首頁」的圓角按鈕。</div>
+  <div class="navbar"><a href="#s6">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s8">下一節 →</a></div>
+</section>
+<section class="section" id="s8">
+  <h2>8. Flexbox：讓排版變簡單</h2>
+  <p class="desc">使用 display:flex 可以輕鬆做出水平對齊與分配空間的版面。</p>
+  <pre><code>.row {
+  display: flex;
+  gap: 16px;
+}
+
+.col {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  background: #ffffff;
+}</code></pre>
+  <div class="practice"><b>小練習：</b>做一個左右兩欄的區塊：左邊放文字，右邊放圖片，使用 flex 完成。</div>
+  <div class="navbar"><a href="#s7">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s9">下一節 →</a></div>
+</section>
+<section class="section" id="s9">
+  <h2>9. RWD：media query 基本用法</h2>
+  <p class="desc">根據螢幕寬度改變樣式，是響應式網頁設計的核心。</p>
+  <pre><code>/* 桌機版 */
+.card-row {
+  display: flex;
+}
+
+/* 手機版：一欄顯示 */
+@media (max-width: 768px) {
+  .card-row {
+    flex-direction: column;
+  }
+}</code></pre>
+  <div class="practice"><b>小練習：</b>針對你的個人名片頁，在手機寬度時把版面改成一欄排版。</div>
+  <div class="navbar"><a href="#s8">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s10">下一節 →</a></div>
+</section>
+<section class="section" id="s10">
+  <h2>10. 小專題：兩欄版型 + RWD</h2>
+  <p class="desc">綜合運用 Flexbox 與 media query，做出簡單的 RWD 版型。</p>
+  <pre><code>&lt;!-- HTML --&gt;
+&lt;div class="layout"&gt;
+  &lt;aside class="sidebar"&gt;側邊欄內容&lt;/aside&gt;
+  &lt;main class="content"&gt;主要內容&lt;/main&gt;
+&lt;/div&gt;
+
+/* CSS */
+.layout { display: flex; gap: 16px; }
+.sidebar { width: 260px; }
+.content { flex: 1; }
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+  .sidebar { width: auto; }
+}</code></pre>
+  <div class="practice"><b>小練習：</b>把這個兩欄版型改成「上方導覽列 + 左側欄 + 右側內容」的簡易教學網站版。</div>
+  <div class="navbar"><a href="#s9">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s11">下一節 →</a></div>
+</section>
+<section class="section" id="s11">
+  <h2>11. 綜合作業一：三欄卡片 + 手機一欄</h2>
+  <p class="desc">設計一個「課程列表」區塊，桌機版顯示三欄卡片，手機版自動變成一欄。</p>
+  <pre><code>.course-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.course-card {
+  padding: 16px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 6px 12px rgba(15,23,42,0.08);
+}
+
+@media (max-width: 768px) {
+  .course-grid {
+    grid-template-columns: 1fr;
+  }
+}</code></pre>
+  <div class="practice"><b>小練習：</b>請學生自己決定每張卡片的標題與內容，例如「HTML 入門」、「CSS 入門」、「JS 入門」，並完成 RWD 效果。</div>
+  <div class="navbar"><a href="#s10">← 上一節</a><a href="#topAnchor">回到目錄</a><a href="#s12">下一節 →</a></div>
+</section>
+<section class="section" id="s12">
+  <h2>12. 綜合作業二：完成教學網站首頁樣式</h2>
+  <p class="desc">以你目前的 HTML 首頁為基礎，替整個頁面加上統一的配色、字體與 RWD 排版。</p>
+  <pre><code>/* 建議：設定全站共用樣式 */
+:root {
+  --bg: #f3f4ff;
+  --ink: #111827;
+  --brand: #4f46e5;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+header {
+  background: #111827;
+  color: white;
+}
+
+/* 針對手機再加上調整 */
+@media (max-width: 768px) {
+  header nav {
+    flex-direction: column;
+  }
+}</code></pre>
+  <div class="practice"><b>小練習：</b>要求學生交出一個「可以在手機與桌機上都好看」的首頁，並簡短文字說明自己使用了哪些 CSS 技巧。</div>
+  <div class="navbar"><a href="#s11">← 上一節</a><a href="#topAnchor">回到目錄</a><span></span></div>
+</section>
+
+    <hr class="sep">
+    <div class="small">© 梅子的網際網路學習歷程 — 本頁為教學與作業示範用，不會蒐集任何資料。</div>
+  </main>
+</body>
+</html>
