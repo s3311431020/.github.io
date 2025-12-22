@@ -241,6 +241,20 @@
     main{
       margin-top:12px;
     }
+
+    .card-row{
+      display:grid;
+      grid-template-columns:1.1fr 1.4fr;
+      gap:16px;
+      margin-top:12px;
+      align-items:flex-start;
+    }
+    @media (max-width:780px){
+      .card-row{
+        grid-template-columns:1fr;
+      }
+    }
+
     .card{
       background:var(--panel);
       border-radius:18px;
@@ -514,7 +528,8 @@
           <li>可以設定範圍（預設 1 ~ 100），按下「重新開始一局」產生新的秘密數字。</li>
           <li>每次猜完，畫面會告訴你「再大一點」或「再小一點」，並縮小下一次的範圍。</li>
           <li>右邊「抽獎機視窗」會顯示目前的 <b>low / mid / high</b> 三顆球，幫助你視覺化二元搜尋。</li>
-                </ul>
+          <li>可以請學生試試看：「亂猜」和「每次猜中間」哪一種策略比較快？</li>
+        </ul>
       </section>
 
       <aside class="machine-box">
@@ -532,36 +547,38 @@
     </div>
 
     <main>
-      <section class="card">
-        <h2>1. 設定遊戲範圍 <span class="badge">預設 1 ~ 100</span></h2>
-        <p>可以改成 1 ~ 200、1 ~ 999... 看看最大次數需要幾步才會猜中。</p>
-        <div class="control-row">
-          <label for="minInput">最小值：</label>
-          <input type="number" id="minInput" value="1">
-          <label for="maxInput">最大值：</label>
-          <input type="number" id="maxInput" value="100">
-          <button type="button" onclick="initGame()">重新開始一局</button>
-        </div>
-        <div class="hint">
-          建議：先用 1 ~ 100 練習，因為理論上 Binary Search 最多只需要約 <code>log2(100) ≈ 7</code> 次就能找出答案。
-        </div>
-      </section>
+      <div class="card-row">
+        <section class="card">
+          <h2>1. 設定遊戲範圍 <span class="badge">預設 1 ~ 100</span></h2>
+          <p>可以改成 1 ~ 200、1 ~ 999... 看看最大次數需要幾步才會猜中。</p>
+          <div class="control-row">
+            <label for="minInput">最小值：</label>
+            <input type="number" id="minInput" value="1">
+            <label for="maxInput">最大值：</label>
+            <input type="number" id="maxInput" value="100">
+            <button type="button" onclick="initGame()">重新開始一局</button>
+          </div>
+          <div class="hint">
+            建議：先用 1 ~ 100 練習，因為理論上 Binary Search 最多只需要約 <code>log2(100) ≈ 7</code> 次就能找出答案。
+          </div>
+        </section>
 
-      <section class="card">
-        <h2>2. 開始猜數字（想像你在抽樂透球）</h2>
-        <p>請輸入一個介於目前範圍內的整數，然後按下「我要猜！」。</p>
-        <div class="control-row">
-          <label for="guessInput">我要猜的數字：</label>
-          <input type="number" id="guessInput" placeholder="例如：50">
-          <button type="button" onclick="makeGuess()">我要猜！</button>
-          <button type="button" class="btn-ghost" onclick="suggestMid()">電腦建議下一步猜哪裡？</button>
-        </div>
-        <div id="status" class="status"></div>
-        <div class="history">
-          <div class="history-title">猜測紀錄：</div>
-          <div id="historyList"></div>
-        </div>
-      </section>
+        <section class="card">
+          <h2>2. 開始猜數字（想像你在抽樂透球）</h2>
+          <p>請輸入一個介於目前範圍內的整數，然後按下「我要猜！」。</p>
+          <div class="control-row">
+            <label for="guessInput">我要猜的數字：</label>
+            <input type="number" id="guessInput" placeholder="例如：50">
+            <button type="button" onclick="makeGuess()">我要猜！</button>
+            <button type="button" class="btn-ghost" onclick="suggestMid()">電腦建議下一步猜哪裡？</button>
+          </div>
+          <div id="status" class="status"></div>
+          <div class="history">
+            <div class="history-title">猜測紀錄：</div>
+            <div id="historyList"></div>
+          </div>
+        </section>
+      </div>
 
       <div class="back-home">
         <a href="index.html">⬅ 回首頁（回到教學網站首頁）</a>
