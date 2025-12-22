@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>排序演算法比較 + 二元搜尋練習｜梅子的網際網路學習歷程</title>
+  <style>
+    :root{
+      --ink:#0f172a;
+      --muted:#64748b;
+      --bg:#eff6ff;
+      --panel:#ffffff;
+      --brand:#4f46e5;
+      --accent:#f97316;
+      --accent2:#10b981;
+    }
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{
+      font-family:"Microsoft JhengHei",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#e0f2fe,#eef2ff 45%,#fae8ff);
+      color:var(--ink);
+      line-height:1.8;
+      font-size:16px;
+    }
+    a{color:#4f46e5;text-decoration:none;}
+    a:hover{text-decoration:underline;}
+
+    .container{
+      max-width:1000px;
+      margin:0 auto;
+      padding:0 16px 30px;
+    }
+
+    /* 頂部列 */
+    header{
+      background:#0f172a;
+      color:#e5e7eb;
+      box-shadow:0 4px 16px rgba(15,23,42,0.7);
+      margin-bottom:16px;
+    }
+    .topbar{
+      max-width:1000px;
+      margin:0 auto;
+      padding:10px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .brand-title{
+      font-size:18px;
+      font-weight:700;
+    }
+    .brand-sub{
+      font-size:13px;
+      color:#9ca3af;
+    }
+    .top-left{
+      display:flex;
+      flex-direction:column;
+    }
+    .btn-home{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid #4b5563;
+      color:#e5e7eb;
+      font-size:14px;
+      text-decoration:none;
+      background:#020617;
+    }
+    .btn-home:hover{
+      background:#111827;
+    }
+
+    /* 區塊通用 */
+    main{
+      margin-top:8px;
+    }
+    .card{
+      background:var(--panel);
+      border-radius:18px;
+      border:1px solid #e5e7eb;
+      padding:18px 20px 18px;
+      margin-top:12px;
+      box-shadow:0 10px 26px rgba(15,23,42,0.18);
+    }
+    .card h2{
+      margin-top:0;
+      margin-bottom:6px;
+      font-size:20px;
+    }
+    .card p{
+      margin:4px 0 8px;
+      color:var(--muted);
+    }
+
+    .badge{
+      display:inline-block;
+      font-size:11px;
+      padding:2px 7px;
+      border-radius:999px;
+      background:#eef2ff;
+      color:#3730a3;
+      border:1px solid #c7d2fe;
+      margin-left:6px;
+    }
+
+    label{
+      display:block;
+      margin:8px 0 4px;
+      font-weight:600;
+    }
+    textarea{
+      width:100%;
+      min-height:90px;
+      padding:8px 10px;
+      border-radius:10px;
+      border:1px solid #cbd5f5;
+      font-size:15px;
+      resize:vertical;
+      box-shadow:0 0 0 1px rgba(148,163,184,0.3) inset;
+    }
+    textarea:focus{
+      outline:none;
+      border-color:#4f46e5;
+      box-shadow:0 0 0 2px rgba(79,70,229,0.25);
+    }
+
+    .btn-row{
+      margin-top:8px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+    }
+    button{
+      padding:7px 16px;
+      cursor:pointer;
+      border-radius:999px;
+      border:1px solid透明;
+      background:#4f46e5;
+      color:#fff;
+      font-size:14px;
+      font-weight:600;
+      box-shadow:0 8px 18px rgba(79,70,229,0.45);
+      transition:transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
+    }
+    button:hover{
+      transform:translateY(-1px);
+      box-shadow:0 10px 22px rgba(79,70,229,0.55);
+    }
+    button:disabled{
+      opacity:0.6;
+      cursor:not-allowed;
+      box-shadow:none;
+      transform:none;
+    }
+    .btn-ghost{
+      background:#e5e7eb;
+      color:#111827;
+      box-shadow:none;
+    }
+    .btn-ghost:hover{
+      background:#d4d4d8;
+      box-shadow:none;
+    }
+
+    .hint{
+      font-size:13px;
+      color:#6b7280;
+      margin-top:4px;
+    }
+
+    .pill{
+      display:inline-block;
+      padding:2px 8px;
+      border-radius:999px;
+      background:#f9fafb;
+      border:1px solid #e5e7eb;
+      font-size:12px;
+      color:#4b5563;
+      margin-left:6px;
+    }
+
+    /* hero 說明區 */
+    .hero{
+      background:radial-gradient(circle at top left,#e0f2fe,#fef3c7 45%,#fee2e2);
+      border-radius:18px;
+      padding:14px 16px 12px;
+      box-shadow:0 10px 24px rgba(15,23,42,0.15);
+      border:1px solid #e5e7eb;
+    }
+    .hero-title{
+      font-size:22px;
+      font-weight:800;
+      margin:0 0 6px;
+    }
+    .hero-desc{
+      font-size:15px;
+      color:#334155;
+      margin:0 0 4px;
+    }
+    .hero-list{
+      margin:4px 0 0 18px;
+      padding:0;
+      font-size:14px;
+      color:#4b5563;
+    }
+    .hero-list li{
+      margin-bottom:3px;
+    }
+
+    /* 內容排版 */
+    .grid-2{
+      display:grid;
+      grid-template-columns:2.2fr 1.8fr;
+      gap:14px;
+    }
+    @media (max-width:820px){
+      .grid-2{
+        grid-template-columns:1fr;
+      }
+    }
+
+    /* 結果顯示 */
+    .algo-block{
+      margin-top:10px;
+      padding:8px 10px;
+      border-radius:12px;
+      background:#f9fafb;
+      border:1px solid #e5e7eb;
+      font-size:14px;
+    }
+    .algo-title{
+      font-weight:700;
+      margin-bottom:4px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .result-line{
+      margin-top:3px;
+    }
+    .mono{
+      font-family:Consolas,Menlo,monospace;
+      font-size:13px;
+      word-break:break-all;
+    }
+
+    .ball-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:4px;
+      margin-top:4px;
+    }
+    .ball{
+      min-width:24px;
+      min-height:24px;
+      padding:2px 4px;
+      border-radius:999px;
+      font-size:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#eef2ff;
+      border:1px solid #c7d2fe;
+      color:#111827;
+      box-shadow:0 2px 5px rgba(15,23,42,0.15);
+    }
+
+    /* 小抽球機視窗 */
+    .mini-machine{
+      margin-top:8px;
+      padding:10px 10px 8px;
+      border-radius:16px;
+      background:radial-gradient(circle at 20% 0,#fef3c7,#f97316);
+      box-shadow:0 10px 24px rgba(15,23,42,0.25);
+      border:2px solid #facc15;
+      position:relative;
+    }
+    .mini-title{
+      text-align:center;
+      font-size:13px;
+      font-weight:700;
+      color:#1f2937;
+    }
+    .mini-window{
+      margin:6px auto 0;
+      width:100%;
+      min-height:50px;
+      border-radius:999px;
+      background:#020617;
+      border:2px solid #e5e7eb;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:4px;
+      flex-wrap:wrap;
+      padding:4px;
+      overflow:hidden;
+      transform-origin:center;
+    }
+    .mini-window.shake{
+      animation:shake 0.12s linear infinite;
+    }
+    .mini-ball{
+      width:22px;
+      height:22px;
+      border-radius:50%;
+      font-size:11px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#0f172a;
+      background:radial-gradient(circle at 30% 20%,#fff,#fee2e2 45%,#fecaca);
+      border:1px solid rgba(15,23,42,0.15);
+      box-shadow:0 2px 5px rgba(15,23,42,0.5);
+    }
+    .mini-ball.placeholder{
+      background:radial-gradient(circle at 30% 20%,#e5e7eb,#cbd5f5 50%,#9ca3af);
+      color:#020617;
+      border-color:#6b7280;
+    }
+    .mini-footer{
+      margin-top:4px;
+      font-size:11px;
+      color:#111827;
+      text-align:center;
+    }
+
+    @keyframes shake{
+      0%{transform:translateX(0);}
+      25%{transform:translateX(-2px);}
+      50%{transform:translateX(2px);}
+      75%{transform:translateX(-1px);}
+      100%{transform:translateX(0);}
+    }
+
+    /* 分析表格 */
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:13px;
+      margin-top:6px;
+    }
+    th,td{
+      border:1px solid #e5e7eb;
+      padding:4px 6px;
+      text-align:center;
+    }
+    th{
+      background:#eff6ff;
+      font-weight:700;
+    }
+    tbody tr:nth-child(odd){
+      background:#f9fafb;
+    }
+
+    /* 二元搜尋 */
+    .binary-input-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+      margin-top:6px;
+    }
+    .binary-input-row input{
+      width:140px;
+      padding:6px 8px;
+      border-radius:10px;
+      border:1px solid #cbd5f5;
+      font-size:14px;
+    }
+    .binary-input-row input:focus{
+      outline:none;
+      border-color:#4f46e5;
+      box-shadow:0 0 0 2px rgba(79,70,229,0.25);
+    }
+    .binary-result{
+      margin-top:8px;
+      font-size:14px;
+      color:#111827;
+    }
+    .binary-steps{
+      margin-top:4px;
+      font-size:12px;
+      color:#4b5563;
+      background:#f9fafb;
+      border-radius:10px;
+      padding:6px 8px;
+      max-height:160px;
+      overflow:auto;
+      white-space:pre-wrap;
+      font-family:Consolas,Menlo,monospace;
+    }
+
+    .back-home{
+      margin-top:18px;
+      text-align:center;
+      font-size:14px;
+    }
+    .back-home a{
+      text-decoration:none;
+      color:#4f46e5;
+      font-weight:600;
+    }
+
+    @media (max-width:600px){
+      .card{padding:16px 14px;}
+      .hero-title{font-size:20px;}
+    }
+  </style>
+  <script>
+    let globalOriginal = [];
+    let globalQuickSorted = [];
+    let miniTimer = null;
+
+    function randomInt(min, max){
+      return Math.floor(Math.random()*(max-min+1))+min;
+    }
+
+    function generate99(){
+      const data = [];
+      for(let i=0;i<99;i++){
+        data.push(randomInt(1,999));
+      }
+      const ta = document.getElementById("dataInput");
+      ta.value = data.join(", ");
+      updateCount();
+      showMiniPlaceholder();
+      clearResults();
+    }
+
+    function clearData(){
+      document.getElementById("dataInput").value = "";
+      document.getElementById("dataCount").textContent = "目前共有 0 個數值。";
+      showMiniPlaceholder();
+      clearResults();
+    }
+
+    function updateCount(){
+      const raw = document.getElementById("dataInput").value.trim();
+      if(!raw){
+        document.getElementById("dataCount").textContent = "目前共有 0 個數值。";
+        return;
+      }
+      const parts = raw.split(/[,\s]+/).filter(Boolean);
+      document.getElementById("dataCount").textContent = "目前共有 " + parts.length + " 個數值。";
+    }
+
+    function parseData(){
+      const raw = document.getElementById("dataInput").value.trim();
+      if(!raw){
+        alert("請先輸入或產生一組數值（建議 99 個）。");
+        return null;
+      }
+      const parts = raw.split(/[,\s]+/).filter(Boolean);
+      const nums = [];
+      for(const p of parts){
+        const n = Number(p);
+        if(Number.isNaN(n)){
+          alert("包含無法轉成數字的內容：「" + p + "」，請重新檢查輸入。");
+          return null;
+        }
+        nums.push(n);
+      }
+      if(nums.length === 0){
+        alert("目前沒有有效的數值。");
+        return null;
+      }
+      return nums;
+    }
+
+    function bubbleSort(src){
+      const arr = src.slice();
+      let comp = 0, swp = 0;
+      const t0 = performance.now();
+      const n = arr.length;
+      for(let i=0;i<n-1;i++){
+        for(let j=0;j<n-1-i;j++){
+          comp++;
+          if(arr[j] > arr[j+1]){
+            const tmp = arr[j];
+            arr[j] = arr[j+1];
+            arr[j+1] = tmp;
+            swp++;
+          }
+        }
+      }
+      const t1 = performance.now();
+      return {arr, comp, swp, time:(t1-t0)};
+    }
+
+    function insertionSort(src){
+      const arr = src.slice();
+      let comp = 0, swp = 0;
+      const t0 = performance.now();
+      for(let i=1;i<arr.length;i++){
+        const key = arr[i];
+        let j = i-1;
+        while(j>=0){
+          comp++;
+          if(arr[j] > key){
+            arr[j+1] = arr[j];
+            swp++;
+            j--;
+          }else{
+            break;
+          }
+        }
+        arr[j+1] = key;
+      }
+      const t1 = performance.now();
+      return {arr, comp, swp, time:(t1-t0)};
+    }
+
+    function selectionSort(src){
+      const arr = src.slice();
+      let comp = 0, swp = 0;
+      const t0 = performance.now();
+      const n = arr.length;
+      for(let i=0;i<n-1;i++){
+        let minIdx = i;
+        for(let j=i+1;j<n;j++){
+          comp++;
+          if(arr[j] < arr[minIdx]){
+            minIdx = j;
+          }
+        }
+        if(minIdx !== i){
+          const tmp = arr[i];
+          arr[i] = arr[minIdx];
+          arr[minIdx] = tmp;
+          swp++;
+        }
+      }
+      const t1 = performance.now();
+      return {arr, comp, swp, time:(t1-t0)};
+    }
+
+    function quickSortWrapper(src){
+      const arr = src.slice();
+      let comp = 0, swp = 0;
+      const t0 = performance.now();
+
+      function swap(i,j){
+        const tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+        swp++;
+      }
+
+      function partition(low, high){
+        const pivot = arr[high];
+        let i = low - 1;
+        for(let j=low;j<high;j++){
+          comp++;
+          if(arr[j] <= pivot){
+            i++;
+            if(i!==j) swap(i,j);
+          }
+        }
+        if(i+1 !== high) swap(i+1,high);
+        return i+1;
+      }
+
+      function quick(low, high){
+        if(low < high){
+          const p = partition(low,high);
+          quick(low,p-1);
+          quick(p+1,high);
+        }
+      }
+
+      quick(0,arr.length-1);
+      const t1 = performance.now();
+      return {arr, comp, swp, time:(t1-t0)};
+    }
+
+    function shortPreview(arr){
+      if(!arr || arr.length === 0) return "(空陣列)";
+      if(arr.length <= 20) return arr.join(", ");
+      return arr.slice(0,20).join(", ") + " ... （共 " + arr.length + " 筆）";
+    }
+
+    function clearResults(){
+      const ids = ["bubbleOut","insertOut","selectOut","quickOut","summaryBody","binaryResult","binarySteps"];
+      ids.forEach(id=>{
+        const el = document.getElementById(id);
+        if(!el) return;
+        if(id==="summaryBody") el.innerHTML = "";
+        else el.textContent = "";
+      });
+    }
+
+    function showMiniPlaceholder(){
+      const win = document.getElementById("miniWindow");
+      if(!win) return;
+      if(miniTimer !== null){
+        clearInterval(miniTimer);
+        miniTimer = null;
+      }
+      let html = "";
+      for(let i=0;i<6;i++){
+        html += "<span class=\"mini-ball placeholder\">?</span>";
+      }
+      win.innerHTML = html;
+      win.classList.remove("shake");
+    }
+
+    function startMiniAnimation(shuffled){
+      const win = document.getElementById("miniWindow");
+      if(!win) return;
+      if(miniTimer !== null){
+        clearInterval(miniTimer);
+        miniTimer = null;
+      }
+
+      let step = 0;
+      const maxSteps = 14;
+      win.classList.add("shake");
+
+      miniTimer = setInterval(()=>{
+        step++;
+        const len = shuffled.length;
+        const count = Math.min(6,len);
+        const tmp = [];
+        for(let i=0;i<count;i++){
+          const r = Math.floor(Math.random()*len);
+          tmp.push(shuffled[r]);
+        }
+        win.innerHTML = tmp.map(n=>"<span class=\"mini-ball\">"+n+"</span>").join("");
+
+        if(step>=maxSteps){
+          clearInterval(miniTimer);
+          miniTimer = null;
+          win.classList.remove("shake");
+          const finalShow = shuffled.slice(0,6);
+          win.innerHTML = finalShow.map(n=>"<span class=\"mini-ball\">"+n+"</span>").join("");
+        }
+      },90);
+    }
+
+    function runAllSorts(){
+      const nums = parseData();
+      if(!nums) return;
+
+      globalOriginal = nums.slice();
+
+      const warn = (nums.length!==99)
+        ? "（提醒：目前是 " + nums.length + " 個，與指定的 99 個不同，但仍可用來觀察排序差異。）"
+        : "（已達 99 個數值。）";
+      document.getElementById("dataCount").textContent = "目前共有 " + nums.length + " 個數值。" + warn;
+
+      const bubbleRes = bubbleSort(nums);
+      const insertRes = insertionSort(nums);
+      const selectRes = selectionSort(nums);
+      const quickRes  = quickSortWrapper(nums);
+      globalQuickSorted = quickRes.arr.slice();
+
+      document.getElementById("bubbleOut").innerHTML =
+        "<div class='result-line'><b>排序結果（前 20 筆）：</b><span class='mono'>" +
+        shortPreview(bubbleRes.arr) + "</span></div>" +
+        "<div class='result-line'>比較次數：" + bubbleRes.comp +
+        "；交換次數：" + bubbleRes.swp +
+        "；執行時間：" + bubbleRes.time.toFixed(2) + " ms</div>";
+
+      document.getElementById("insertOut").innerHTML =
+        "<div class='result-line'><b>排序結果（前 20 筆）：</b><span class='mono'>" +
+        shortPreview(insertRes.arr) + "</span></div>" +
+        "<div class='result-line'>比較次數：" + insertRes.comp +
+        "；移動/交換次數：" + insertRes.swp +
+        "；執行時間：" + insertRes.time.toFixed(2) + " ms</div>";
+
+      document.getElementById("selectOut").innerHTML =
+        "<div class='result-line'><b>排序結果（前 20 筆）：</b><span class='mono'>" +
+        shortPreview(selectRes.arr) + "</span></div>" +
+        "<div class='result-line'>比較次數：" + selectRes.comp +
+        "；交換次數：" + selectRes.swp +
+        "；執行時間：" + selectRes.time.toFixed(2) + " ms</div>";
+
+      document.getElementById("quickOut").innerHTML =
+        "<div class='result-line'><b>排序結果（前 20 筆）：</b><span class='mono'>" +
+        shortPreview(quickRes.arr) + "</span></div>" +
+        "<div class='result-line'>比較次數：" + quickRes.comp +
+        "；交換次數：" + quickRes.swp +
+        "；執行時間：" + quickRes.time.toFixed(2) + " ms</div>";
+
+      const tbody = document.getElementById("summaryBody");
+      tbody.innerHTML = "";
+      function addRow(name,res,bigO){
+        const tr = document.createElement("tr");
+        tr.innerHTML =
+          "<td>"+name+"</td>"+
+          "<td>"+res.comp+"</td>"+
+          "<td>"+res.swp+"</td>"+
+          "<td>"+res.time.toFixed(2)+"</td>"+
+          "<td>"+bigO+"</td>";
+        tbody.appendChild(tr);
+      }
+      addRow("氣泡排序 (Bubble)",   bubbleRes, "平均 / 最差：O(n²)");
+      addRow("插入排序 (Insertion)", insertRes, "平均：O(n²)，最佳：O(n)");
+      addRow("選擇排序 (Selection)", selectRes, "平均 / 最差：O(n²)");
+      addRow("快速排序 (Quick)",     quickRes,  "平均：O(n log n)");
+
+      startMiniAnimation(quickRes.arr);
+    }
+
+    function binarySearch(){
+      if(!globalQuickSorted || globalQuickSorted.length===0){
+        alert("請先執行排序（建議使用上方「執行四種排序」按鈕）。");
+        return;
+      }
+      const input = document.getElementById("binaryInput");
+      const keyStr = input.value.trim();
+      if(!keyStr){
+        alert("請輸入要尋找的數值。");
+        input.focus();
+        return;
+      }
+      const key = Number(keyStr);
+      if(Number.isNaN(key)){
+        alert("請輸入「數字」喔！");
+        input.focus();
+        return;
+      }
+
+      let low = 0;
+      let high = globalQuickSorted.length - 1;
+      let steps = "";
+      let comp = 0;
+      let foundIndex = -1;
+
+      while(low <= high){
+        const mid = Math.floor((low+high)/2);
+        const midVal = globalQuickSorted[mid];
+        comp++;
+        steps += "low=" + low + ", high=" + high + ", mid=" + mid +
+                 ", arr[mid]=" + midVal + "\n";
+        if(midVal === key){
+          foundIndex = mid;
+          break;
+        }else if(key < midVal){
+          high = mid - 1;
+        }else{
+          low = mid + 1;
+        }
+      }
+
+      const resultEl = document.getElementById("binaryResult");
+      if(foundIndex >= 0){
+        resultEl.textContent = "找到！數值 " + key + " 的索引位置為 index = " +
+          foundIndex + "（以 0 為起點）。比較次數：" + comp + " 次。";
+      }else{
+        resultEl.textContent = "找不到數值 " + key +
+          "。在這個排序結果中，不存在這個數字。比較次數：" + comp + " 次。";
+      }
+      document.getElementById("binarySteps").textContent = steps;
+    }
+
+    window.addEventListener("load", ()=>{
+      showMiniPlaceholder();
+      document.getElementById("dataInput").addEventListener("input", updateCount);
+    });
+  </script>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div class="top-left">
+        <div class="brand-title">梅子的網際網路學習歷程</div>
+        <div class="brand-sub">今日功課：四種排序演算法 + 二元搜尋練習</div>
+      </div>
+      <a class="btn-home" href="index.html">← 回首頁</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <section class="card hero">
+      <h1 class="hero-title">
+        今天功課：99 個數值的排序比較 + 二元搜尋
+      </h1>
+      <p class="hero-desc">
+        題目：準備一組 <b>99 個數值</b>，分別用 <b>氣泡排序 (Bubble)</b>、<b>插入排序 (Insertion)</b>、
+        <b>選擇排序 (Selection)</b>、<b>快速排序 (Quick)</b> 排序，並比較它們的「比較次數、交換次數、執行時間」，
+        再用 <b>二元搜尋 (Binary Search)</b> 在排序後的結果中找某一個數字。
+      </p>
+      <ul class="hero-list">
+        <li>本頁會幫你計算統計數據，你可以依據畫面做出自己的「分析判斷表」。</li>
+        <li>建議：先觀察 99 個數值的情況，再試試 20 個、200 個，看排序時間變化。</li>
+        <li>二元搜尋的「每一步 low / high / mid」也會顯示出來，方便你畫流程圖。</li>
+      </ul>
+    </section>
+
+    <main class="grid-2">
+      <section>
+        <div class="card">
+          <h2>1. 準備資料 <span class="badge">建議：99 個數值</span></h2>
+          <p>可以用亂數產生 99 個數值，或自行貼上題目給的資料（用逗號、空白或換行分隔）。</p>
+
+          <label for="dataInput">請輸入數值列表：</label>
+          <textarea id="dataInput" placeholder="例如：
+23, 7, 105, 42, 9, 88, 16, ..."></textarea>
+          <div class="btn-row">
+            <button type="button" onclick="generate99()">產生 99 個亂數</button>
+            <button type="button" class="btn-ghost" onclick="clearData()">清除資料</button>
+          </div>
+          <div id="dataCount" class="hint">目前共有 0 個數值。</div>
+
+          <div class="mini-machine">
+            <div class="mini-title">打散後（快速排序結果）前幾顆球</div>
+            <div id="miniWindow" class="mini-window"></div>
+            <div class="mini-footer">執行排序後，這裡會像小型抽球機一樣顯示排序結果前幾個數值。</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>2. 執行四種排序</h2>
+          <p>按下按鈕後，會對同一組資料分別做 Bubble / Insertion / Selection / Quick 排序，並統計比較次數與執行時間。</p>
+          <div class="btn-row">
+            <button id="runBtn" type="button" onclick="runAllSorts()">執行四種排序並統計</button>
+          </div>
+          <div class="hint">說明：這裡的「比較次數」指的是有做到 <code>if (a &gt; b)</code> 類似判斷的次數；「交換次數」則是兩個數值互換位置的次數。</div>
+
+          <div class="algo-block">
+            <div class="algo-title">
+              氣泡排序 (Bubble Sort)
+              <span class="pill">一直交換相鄰元素</span>
+            </div>
+            <div id="bubbleOut"></div>
+          </div>
+
+          <div class="algo-block">
+            <div class="algo-title">
+              插入排序 (Insertion Sort)
+              <span class="pill">像玩撲克牌插入適當位置</span>
+            </div>
+            <div id="insertOut"></div>
+          </div>
+
+          <div class="algo-block">
+            <div class="algo-title">
+              選擇排序 (Selection Sort)
+              <span class="pill">每一輪選出最小值</span>
+            </div>
+            <div id="selectOut"></div>
+          </div>
+
+          <div class="algo-block">
+            <div class="algo-title">
+              快速排序 (Quick Sort)
+              <span class="pill">分治法：選 pivot 分左右兩邊</span>
+            </div>
+            <div id="quickOut"></div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="card">
+          <h2>3. 分析判斷表（程式自動幫你整理）</h2>
+          <p>下面的表格是程式實際跑完 4 種排序後的統計結果，可以作為你寫「分析判斷表」時的參考。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>演算法</th>
+                <th>比較次數</th>
+                <th>交換 / 移動次數</th>
+                <th>執行時間 (ms)</th>
+                <th>時間複雜度（理論）</th>
+              </tr>
+            </thead>
+            <tbody id="summaryBody">
+            </tbody>
+          </table>
+          <p class="hint">
+            作業建議：把上面數據抄到自己的筆記中，搭配課本上的 Big-O 表格，寫一句自己的結論：  
+            「在 99 筆資料時，哪一種排序實際上最快？哪一種比較慢？和理論上一樣嗎？」
+          </p>
+        </div>
+
+        <div class="card">
+          <h2>4. 二元搜尋演算法（Binary Search）</h2>
+          <p>使用「快速排序 (Quick)」後的結果，來進行二元搜尋。每一步的 low / high / mid 都會記錄在下面。</p>
+          <div class="binary-input-row">
+            <label for="binaryInput" style="margin:0;font-weight:600;">要尋找的數值：</label>
+            <input type="number" id="binaryInput" placeholder="例如：42">
+            <button type="button" onclick="binarySearch()">開始二元搜尋</button>
+          </div>
+          <div id="binaryResult" class="binary-result"></div>
+          <div id="binarySteps" class="binary-steps"></div>
+          <p class="hint">
+            作業提示：請畫出二元搜尋的流程圖，並以實際搜尋的步驟（low / high / mid 的變化）為例，說明為什麼時間複雜度是 O(log n)。
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <div class="back-home">
+      <a href="index.html">⬅ 回首頁（回到教學網站首頁）</a>
+    </div>
+  </div>
+</body>
+</html>
