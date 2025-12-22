@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>打散 + 排序抽球機（含抽球動畫）｜梅子的網際網路學習歷程</title>
+  <style>
+    :root{
+      --ink:#0f172a;
+      --muted:#64748b;
+      --bg:#eff6ff;
+      --panel:#ffffff;
+      --brand:#4f46e5;
+      --accent:#f97316;
+      --accent2:#10b981;
+    }
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{
+      font-family:"Microsoft JhengHei",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#e0f2fe,#eef2ff 45%,#fae8ff);
+      color:var(--ink);
+      line-height:1.8;
+      font-size:16px;
+    }
+    a{color:#4f46e5;text-decoration:none;}
+    a:hover{text-decoration:underline;}
+
+    .container{
+      max-width:960px;
+      margin:0 auto;
+      padding:0 16px 30px;
+    }
+
+    /* 頂部列 */
+    header{
+      background:#0f172a;
+      color:#e5e7eb;
+      box-shadow:0 4px 16px rgba(15,23,42,0.7);
+      margin-bottom:16px;
+    }
+    .topbar{
+      max-width:960px;
+      margin:0 auto;
+      padding:10px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .brand-title{
+      font-size:18px;
+      font-weight:700;
+    }
+    .brand-sub{
+      font-size:13px;
+      color:#9ca3af;
+    }
+    .top-left{
+      display:flex;
+      flex-direction:column;
+    }
+    .btn-home{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid #4b5563;
+      color:#e5e7eb;
+      font-size:14px;
+      text-decoration:none;
+      background:#020617;
+    }
+    .btn-home:hover{
+      background:#111827;
+    }
+
+    /* Hero 區：抽球機背景 */
+    .hero{
+      padding:22px 0 10px;
+    }
+    .hero-inner{
+      display:flex;
+      gap:20px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .hero-text{
+      flex:1 1 260px;
+      min-width:0;
+    }
+    .hero-title{
+      font-size:28px;
+      font-weight:800;
+      margin:0 0 6px;
+    }
+    .hero-sub{
+      font-size:16px;
+      color:var(--muted);
+      margin:0 0 10px;
+    }
+    .hero-note{
+      font-size:14px;
+      color:#334155;
+    }
+    .hero-machine{
+      flex:1 1 260px;
+      min-width:0;
+      display:flex;
+      justify-content:center;
+    }
+    .machine-card{
+      width:260px;
+      height:220px;
+      border-radius:24px;
+      background:radial-gradient(circle at 20% 0,#fef3c7,#f97316);
+      box-shadow:0 18px 40px rgba(15,23,42,0.35);
+      border:3px solid #facc15;
+      padding:12px 10px 10px;
+      position:relative;
+      overflow:hidden;
+    }
+    .machine-top{
+      text-align:center;
+      font-size:15px;
+      font-weight:800;
+      color:#1f2937;
+      letter-spacing:2px;
+    }
+    .machine-top span{
+      color:#b91c1c;
+    }
+    .machine-window{
+      margin:10px auto 0;
+      width:92%;
+      height:110px;
+      border-radius:999px;
+      background:#020617;
+      border:3px solid #e5e7eb;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      flex-wrap:wrap;
+      padding:6px;
+      position:relative;
+      overflow:hidden;
+      transform-origin:center;
+    }
+    .machine-window.shake{
+      animation:shake 0.12s linear infinite;
+    }
+    @keyframes shake{
+      0%{transform:translateX(0);}
+      25%{transform:translateX(-2px);}
+      50%{transform:translateX(2px);}
+      75%{transform:translateX(-1px);}
+      100%{transform:translateX(0);}
+    }
+    .machine-base{
+      position:absolute;
+      bottom:0;
+      left:0;
+      right:0;
+      height:46px;
+      background:linear-gradient(to top,#1e293b,#0f172a);
+      border-top:3px solid rgba(15,23,42,0.8);
+    }
+    .machine-slot{
+      position:absolute;
+      bottom:8px;
+      left:50%;
+      transform:translateX(-50%);
+      width:90px;
+      height:16px;
+      border-radius:10px;
+      background:#e5e7eb;
+      box-shadow:inset 0 2px 4px rgba(15,23,42,0.4);
+    }
+    .machine-handle{
+      position:absolute;
+      right:10px;
+      bottom:26px;
+      width:22px;
+      height:22px;
+      border-radius:50%;
+      background:radial-gradient(circle at 30% 20%,#fee2e2,#fb923c);
+      border:2px solid #b91c1c;
+      box-shadow:0 4px 8px rgba(15,23,42,0.5);
+    }
+    .machine-footer{
+      position:absolute;
+      bottom:2px;
+      left:0;
+      right:0;
+      text-align:center;
+      font-size:11px;
+      color:#fefce8;
+      opacity:.9;
+      z-index:2;
+    }
+
+    /* 球樣式 */
+    .ball{
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-size:15px;
+      color:#0f172a;
+      background:radial-gradient(circle at 30% 20%,#fff,#fee2e2 45%,#fecaca);
+      border:2px solid rgba(15,23,42,0.12);
+      box-shadow:0 4px 10px rgba(15,23,42,0.4);
+      margin:2px;
+    }
+    .ball.blue{
+      background:radial-gradient(circle at 30% 20%,#eff6ff,#bfdbfe 50%,#93c5fd);
+      border-color:#1d4ed8;
+    }
+    .ball.green{
+      background:radial-gradient(circle at 30% 20%,#ecfdf5,#bbf7d0 50%,#6ee7b7);
+      border-color:#16a34a;
+    }
+    .ball.purple{
+      background:radial-gradient(circle at 30% 20%,#f5f3ff,#ddd6fe 50%,#a5b4fc);
+      border-color:#4f46e5;
+    }
+    .ball.placeholder{
+      background:radial-gradient(circle at 30% 20%,#e5e7eb,#cbd5f5 50%,#9ca3af);
+      color:#020617;
+      border-color:#6b7280;
+    }
+
+    /* 主卡片 */
+    main{
+      margin-top:4px;
+    }
+    .card{
+      background:var(--panel);
+      border-radius:18px;
+      border:1px solid #e5e7eb;
+      padding:18px 20px 18px;
+      margin-top:12px;
+      box-shadow:0 10px 26px rgba(15,23,42,0.18);
+    }
+    .card h2{
+      margin-top:0;
+      margin-bottom:6px;
+      font-size:20px;
+    }
+    .card p{
+      margin:4px 0 8px;
+      color:var(--muted);
+    }
+
+    label{
+      display:block;
+      margin:8px 0 4px;
+      font-weight:600;
+    }
+    input[type="text"]{
+      width:100%;
+      padding:8px 10px;
+      border-radius:10px;
+      border:1px solid #cbd5f5;
+      font-size:15px;
+      box-shadow:0 0 0 1px rgba(148,163,184,0.3) inset;
+    }
+    input[type="text"]:focus{
+      outline:none;
+      border-color:#4f46e5;
+      box-shadow:0 0 0 2px rgba(79,70,229,0.25);
+    }
+
+    .btn-row{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+    }
+    button{
+      padding:7px 16px;
+      cursor:pointer;
+      border-radius:999px;
+      border:1px solid transparent;
+      background:#4f46e5;
+      color:#fff;
+      font-size:14px;
+      font-weight:600;
+      box-shadow:0 8px 18px rgba(79,70,229,0.45);
+      transition:transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
+    }
+    button:hover{
+      transform:translateY(-1px);
+      box-shadow:0 10px 22px rgba(79,70,229,0.55);
+    }
+    button:disabled{
+      opacity:0.6;
+      cursor:not-allowed;
+      box-shadow:none;
+      transform:none;
+    }
+    .btn-ghost{
+      background:#e5e7eb;
+      color:#111827;
+      box-shadow:none;
+    }
+    .btn-ghost:hover{
+      background:#d4d4d8;
+      box-shadow:none;
+    }
+
+    .hint{
+      font-size:13px;
+      color:#6b7280;
+      margin-top:4px;
+    }
+
+    /* 結果區塊 */
+    .result-section{
+      margin-top:14px;
+      padding-top:10px;
+      border-top:1px dashed #e5e7eb;
+    }
+    .result-group{
+      margin-top:10px;
+    }
+    .result-title{
+      font-weight:700;
+      font-size:15px;
+      margin-bottom:4px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .tag{
+      display:inline-block;
+      font-size:11px;
+      padding:2px 7px;
+      border-radius:999px;
+      background:#eef2ff;
+      color:#3730a3;
+      border:1px solid #c7d2fe;
+    }
+    .ball-row{
+      padding:6px 8px;
+      background:#f9fafb;
+      border-radius:12px;
+      min-height:44px;
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .note{
+      margin-top:14px;
+      background:#f0f9ff;
+      border-left:4px solid #0ea5e9;
+      padding:8px 10px;
+      border-radius:10px;
+      font-size:14px;
+      color:#0369a1;
+    }
+    .homework{
+      margin-top:16px;
+      background:#ecfdf5;
+      border-left:4px solid #22c55e;
+      padding:10px 12px;
+      border-radius:10px;
+      font-size:14px;
+      color:#166534;
+    }
+    .homework-title{
+      font-weight:700;
+      margin-bottom:4px;
+    }
+    .homework ul{
+      margin:4px 0 0 18px;
+      padding:0;
+    }
+    .homework li{
+      margin-bottom:4px;
+    }
+
+    .back-home{
+      margin-top:18px;
+      text-align:center;
+      font-size:14px;
+    }
+    .back-home a{
+      text-decoration:none;
+      color:#4f46e5;
+      font-weight:600;
+    }
+
+    @media (max-width:720px){
+      .hero-inner{flex-direction:column;}
+      .hero-title{font-size:24px;}
+      .machine-card{width:230px;height:210px;}
+      .ball{width:30px;height:30px;font-size:14px;}
+      .card{padding:16px 14px;}
+    }
+  </style>
+  <script>
+    let machineTimer = null;
+
+    function fillExample() {
+      const input = document.getElementById("numbersInput");
+      input.value = "8, 3, 15, 2, 10, 21, 7";
+    }
+
+    function makeBalls(arr, colorClass) {
+      if (!arr || arr.length === 0) return "";
+      return arr.map(n => "<span class=\"ball " + colorClass + "\">" + n + "</span>").join("");
+    }
+
+    function showPlaceholderBalls() {
+      const machine = document.getElementById("machineWindow");
+      let html = "";
+      for (let i = 0; i < 6; i++) {
+        html += "<span class=\"ball placeholder\">?</span>";
+      }
+      machine.innerHTML = html;
+    }
+
+    function startMachineAnimation(finalShuffled) {
+      const machine = document.getElementById("machineWindow");
+      const actionBtn = document.getElementById("actionButton");
+
+      // 保險：先清掉舊的計時器
+      if (machineTimer !== null) {
+        clearInterval(machineTimer);
+        machineTimer = null;
+      }
+
+      let step = 0;
+      const maxSteps = 14; // 轉幾下
+      machine.classList.add("shake");
+      actionBtn.disabled = true;
+
+      machineTimer = setInterval(() => {
+        step++;
+
+        // 每一小步都顯示「隨機 6 顆球」，讓畫面像在滾
+        const temp = [];
+        const len = finalShuffled.length;
+        const count = Math.min(6, len);
+        for (let i = 0; i < count; i++) {
+          const r = Math.floor(Math.random() * len);
+          temp.push(finalShuffled[r]);
+        }
+        machine.innerHTML = makeBalls(temp, "");
+
+        if (step >= maxSteps) {
+          clearInterval(machineTimer);
+          machineTimer = null;
+          machine.classList.remove("shake");
+          // 最後顯示真正打散後的前幾顆
+          machine.innerHTML = makeBalls(finalShuffled.slice(0, 6), "");
+          actionBtn.disabled = false;
+        }
+      }, 90);
+    }
+
+    function shuffleAndSort() {
+      const input = document.getElementById("numbersInput");
+      const raw = input.value.trim();
+
+      if (!raw) {
+        alert("請先輸入一串數字喔！");
+        input.focus();
+        return;
+      }
+
+      // 將輸入字串依逗號或空白分割
+      const parts = raw.split(/[,\s]+/).filter(Boolean);
+      const nums = [];
+      for (let p of parts) {
+        const n = Number(p);
+        if (Number.isNaN(n)) {
+          alert("包含無法轉成數字的內容：「" + p + "」，請重新輸入。");
+          input.focus();
+          return;
+        }
+        nums.push(n);
+      }
+
+      if (nums.length === 0) {
+        alert("請至少輸入 1 個數字喔！");
+        input.focus();
+        return;
+      }
+
+      // 原始順序
+      const original = nums.slice();
+
+      // 打散（Fisher-Yates）
+      const shuffled = original.slice();
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const r = Math.floor(Math.random() * (i + 1));
+        const tmp = shuffled[i];
+        shuffled[i] = shuffled[r];
+        shuffled[r] = tmp;
+      }
+
+      // 由小到大排序
+      const asc = original.slice().sort((a,b) => a - b);
+
+      // 由大到小排序
+      const desc = original.slice().sort((a,b) => b - a);
+
+      // 顯示到畫面上（球）
+      document.getElementById("originalRow").innerHTML = makeBalls(original,"purple");
+      document.getElementById("shuffledRow").innerHTML = makeBalls(shuffled,"");
+      document.getElementById("ascRow").innerHTML      = makeBalls(asc,"green");
+      document.getElementById("descRow").innerHTML     = makeBalls(desc,"blue");
+
+      // 啟動抽球機動畫
+      startMachineAnimation(shuffled);
+    }
+
+    // 頁面載入時先顯示「?」球，並填入示範資料
+    window.addEventListener("load", () => {
+      showPlaceholderBalls();
+      fillExample();
+    });
+  </script>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div class="top-left">
+        <div class="brand-title">梅子的網際網路學習歷程</div>
+        <div class="brand-sub">JavaScript 打散 + 排序「抽球機視窗 + 動畫」練習頁</div>
+      </div>
+      <a class="btn-home" href="index.html">← 回首頁</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-text">
+          <h1 class="hero-title">打散 + 由小到大／由大到小排序｜抽球機動畫版</h1>
+          <p class="hero-sub">
+            想像你在玩樂透抽球：先把一串號碼丟進抽球機，按下按鈕後球會在機器裡「咕嚕咕嚕」亂滾，最後停下來顯示結果。
+          </p>
+          <p class="hero-note">
+            練習重點：陣列複製、Fisher-Yates 洗牌、<code>Array.sort()</code> 比較函式，以及用 <code>setInterval</code> 做簡單動畫效果。
+          </p>
+        </div>
+        <div class="hero-machine">
+          <div class="machine-card">
+            <div class="machine-top">樂透<span>抽球機</span></div>
+            <div id="machineWindow" class="machine-window">
+              <!-- 進入頁面先看到 ? 球，按下開始後會顯示真正的球 -->
+            </div>
+            <div class="machine-base"></div>
+            <div class="machine-slot"></div>
+            <div class="machine-handle"></div>
+            <div class="machine-footer">按「開始抽球 + 排序」，球球會先滾一圈再停下 ✨</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <main>
+      <div class="card">
+        <h2>Step 1：輸入號碼，啟動抽球機</h2>
+        <p>請輸入一串數字，例如：<code>8, 3, 15, 2, 10</code>，可以用逗號或空白分隔。</p>
+
+        <label for="numbersInput">1. 請輸入一串數字：</label>
+        <input type="text" id="numbersInput" placeholder="例如：8, 3, 15, 2, 10">
+        <div class="btn-row">
+          <button id="actionButton" onclick="shuffleAndSort()">開始抽球 + 排序</button>
+          <button class="btn-ghost" type="button" onclick="fillExample()">填入示範資料</button>
+        </div>
+        <div class="hint">小提醒：系統會自動把文字轉成數字，若有錯字（例如「三」），會跳出提示。</div>
+
+        <div class="result-section">
+          <div class="result-group">
+            <div class="result-title">
+              2. 原始順序
+              <span class="tag">輸入時的順序</span>
+            </div>
+            <div id="originalRow" class="ball-row"></div>
+          </div>
+
+          <div class="result-group">
+            <div class="result-title">
+              3. 打散後順序（洗牌結果）
+              <span class="tag">抽球機打亂後</span>
+            </div>
+            <div id="shuffledRow" class="ball-row"></div>
+          </div>
+
+          <div class="result-group">
+            <div class="result-title">
+              4. 由小到大排序
+              <span class="tag">升冪（最小 → 最大）</span>
+            </div>
+            <div id="ascRow" class="ball-row"></div>
+          </div>
+
+          <div class="result-group">
+            <div class="result-title">
+              5. 由大到小排序
+              <span class="tag">降冪（最大 → 最小）</span>
+            </div>
+            <div id="descRow" class="ball-row"></div>
+          </div>
+        </div>
+
+        <div class="note">
+          提醒：如果沒有提供比較函式，<code>Array.sort()</code> 會把數字當「字串」排序，
+          例如 <code>[2, 13, 6]</code> 排完會變成 <code>[13, 2, 6]</code>。  
+          正確寫法是：<code>nums.sort((a, b) =&gt; a - b)</code> 或 <code>b - a</code>。
+        </div>
+
+        <div class="homework">
+          <div class="homework-title">延伸作業題目（可以給學生練習）：</div>
+          <ul>
+            <li>把抽球機的顏色改成自己班級的代表色，或改成「彩虹球」、「單色球」主題。</li>
+            <li>調整動畫時間與速度，讓抽球機滾比較久或比較快。</li>
+            <li>加上「只重新洗牌」按鈕，每次點擊只重新打散，不重新讀取輸入欄位。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="back-home">
+        <a href="index.html">⬅ 回首頁（回到教學網站首頁）</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

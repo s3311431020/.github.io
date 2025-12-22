@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>隨機點名練習｜梅子的網際網路學習歷程</title>
+  <style>
+    :root{
+      --ink:#1f2937;
+      --muted:#64748b;
+      --bg:#f3f4ff;
+      --panel:#ffffff;
+      --brand:#4f46e5;
+      --accent:#10b981;
+    }
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{
+      font-family:"Microsoft JhengHei",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      line-height:1.8;
+      font-size:16px;
+    }
+    a{color:#4f46e5;text-decoration:none;}
+    a:hover{text-decoration:underline;}
+
+    .container{
+      max-width:900px;
+      margin:0 auto;
+      padding:0 16px 26px;
+    }
+
+    header{
+      background:#111827;
+      color:#f9fafb;
+      box-shadow:0 4px 14px rgba(0,0,0,0.35);
+      margin-bottom:20px;
+    }
+    .topbar{
+      max-width:900px;
+      margin:0 auto;
+      padding:10px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .brand-title{
+      font-size:18px;
+      font-weight:700;
+    }
+    .brand-sub{
+      font-size:13px;
+      color:#9ca3af;
+    }
+    .top-left{
+      display:flex;
+      flex-direction:column;
+    }
+    .btn-home{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid #4b5563;
+      color:#e5e7eb;
+      font-size:14px;
+      text-decoration:none;
+      background:#030712;
+    }
+    .btn-home:hover{
+      background:#111827;
+    }
+
+    .hero{
+      background:radial-gradient(circle at top left,#e0f2fe,#fef3c7 45%,#fee2e2);
+      padding:20px 0 10px;
+      margin-bottom:10px;
+      border-bottom:1px solid #e5e7eb;
+    }
+    .hero-inner{
+      max-width:900px;
+      margin:0 auto;
+      padding:0 16px;
+    }
+    .hero-title{
+      font-size:26px;
+      font-weight:800;
+      margin:0 0 6px;
+    }
+    .hero-desc{
+      font-size:15px;
+      color:var(--muted);
+      margin:0 0 8px;
+    }
+    .hero-note{
+      font-size:14px;
+      color:#4b5563;
+    }
+
+    main{
+      padding-top:4px;
+    }
+    .card{
+      background:var(--panel);
+      border:1px solid #e5e7eb;
+      border-radius:14px;
+      padding:16px 18px;
+      margin-top:12px;
+      box-shadow:0 8px 18px rgba(15,23,42,0.07);
+    }
+    .card h2{
+      margin-top:0;
+      margin-bottom:6px;
+      font-size:20px;
+    }
+    .card p{
+      margin:4px 0 10px;
+      color:var(--muted);
+    }
+
+    label{
+      display:block;
+      margin:8px 0 4px;
+      font-weight:600;
+    }
+    textarea{
+      width:100%;
+      min-height:140px;
+      padding:8px 10px;
+      border-radius:8px;
+      border:1px solid #d1d5db;
+      font-size:15px;
+      resize:vertical;
+    }
+    .btn-row{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    button{
+      padding:6px 14px;
+      cursor:pointer;
+      border-radius:999px;
+      border:1px solid transparent;
+      background:#4f46e5;
+      color:#fff;
+      font-size:14px;
+      font-weight:600;
+      box-shadow:0 6px 14px rgba(79,70,229,0.35);
+    }
+    button:hover{
+      transform:translateY(-1px);
+      box-shadow:0 8px 18px rgba(79,70,229,0.4);
+    }
+    .btn-secondary{
+      background:#e5e7eb;
+      color:#111827;
+      box-shadow:none;
+    }
+    .btn-secondary:hover{
+      background:#d4d4d8;
+      box-shadow:none;
+      transform:translateY(-1px);
+    }
+
+    .status-bar{
+      margin-top:10px;
+      font-size:14px;
+      color:#4b5563;
+    }
+
+    .current-name-box{
+      margin-top:14px;
+      padding:12px 14px;
+      border-radius:12px;
+      background:#fef3c7;
+      border:1px solid #facc15;
+      text-align:center;
+    }
+    .current-label{
+      font-size:14px;
+      color:#92400e;
+      margin-bottom:6px;
+    }
+    .current-name{
+      font-size:26px;
+      font-weight:800;
+      color:#713f12;
+      min-height:1.4em;
+    }
+
+    .history-box{
+      margin-top:16px;
+      padding:10px 12px;
+      border-radius:12px;
+      background:#eff6ff;
+      border:1px solid #bfdbfe;
+      font-size:14px;
+      color:#1d4ed8;
+    }
+    .history-title{
+      font-weight:700;
+      margin-bottom:4px;
+    }
+    .history-list{
+      min-height:1.2em;
+    }
+
+    .note{
+      margin-top:14px;
+      background:#f0f9ff;
+      border-left:4px solid #0ea5e9;
+      padding:8px 10px;
+      border-radius:10px;
+      font-size:14px;
+      color:#0369a1;
+    }
+    .homework{
+      margin-top:16px;
+      background:#ecfdf5;
+      border-left:4px solid #22c55e;
+      padding:10px 12px;
+      border-radius:10px;
+      font-size:14px;
+      color:#166534;
+    }
+    .homework-title{
+      font-weight:700;
+      margin-bottom:4px;
+    }
+    .homework ul{
+      margin:4px 0 0 18px;
+      padding:0;
+    }
+    .homework li{
+      margin-bottom:4px;
+    }
+
+    .back-home{
+      margin-top:18px;
+      text-align:center;
+      font-size:14px;
+    }
+    .back-home a{
+      text-decoration:none;
+      color:#4f46e5;
+      font-weight:600;
+    }
+
+    @media (max-width:600px){
+      .hero-title{font-size:22px;}
+      .card{padding:14px 14px;}
+    }
+  </style>
+  <script>
+    let allNames = [];
+    let remainingNames = [];
+    let historyNames = [];
+
+    function buildList() {
+      const input = document.getElementById("nameInput");
+      const raw = input.value.trim();
+      if (!raw) {
+        alert("請先輸入學生名字（每個用逗號、空白或換行分隔）");
+        input.focus();
+        return;
+      }
+
+      // 依換行、逗號、頓號、空白分割
+      const parts = raw.split(/[\n,，、\s]+/).filter(Boolean);
+      if (parts.length === 0) {
+        alert("沒有讀到有效的名字，請重新檢查輸入。");
+        input.focus();
+        return;
+      }
+
+      allNames = parts;
+      remainingNames = parts.slice(); // 複製一份
+      historyNames = [];
+
+      updateStatus();
+      document.getElementById("currentName").textContent = "";
+      document.getElementById("historyList").textContent = "";
+    }
+
+    function pickRandom() {
+      if (remainingNames.length === 0) {
+        if (allNames.length === 0) {
+          alert("請先輸入名單並按「建立名單」。");
+        } else {
+          alert("所有同學都點過一次囉！若要重新點名，請按「全部重置」。");
+        }
+        return;
+      }
+
+      const r = Math.floor(Math.random() * remainingNames.length);
+      const name = remainingNames.splice(r, 1)[0]; // 從剩餘名單中移除
+
+      historyNames.unshift(name); // 最新的放前面
+
+      document.getElementById("currentName").textContent = name;
+      document.getElementById("historyList").textContent = historyNames.join("、");
+      updateStatus();
+    }
+
+    function resetAll() {
+      allNames = [];
+      remainingNames = [];
+      historyNames = [];
+      document.getElementById("nameInput").value = "";
+      document.getElementById("status").textContent = "目前尚未建立名單。";
+      document.getElementById("currentName").textContent = "";
+      document.getElementById("historyList").textContent = "";
+    }
+
+    function updateStatus() {
+      const total = allNames.length;
+      const remain = remainingNames.length;
+      const called = historyNames.length;
+      document.getElementById("status").textContent =
+        "總人數：" + total +
+        "　｜　已點：" + called +
+        "　｜　尚未點：" + remain;
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div class="top-left">
+        <div class="brand-title">梅子的網際網路學習歷程</div>
+        <div class="brand-sub">JavaScript 隨機點名練習頁</div>
+      </div>
+      <a class="btn-home" href="index.html">← 回首頁</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <h1 class="hero-title">隨機點名練習</h1>
+      <p class="hero-desc">
+        把學生名字貼上來，按下「建立名單」後，就可以使用「隨機點名」功能，每位學生只會被點到一次。
+      </p>
+      <p class="hero-note">
+        練習重點：字串切割、陣列操作（加入、移除）、Math.random()、狀態紀錄。
+      </p>
+    </div>
+  </section>
+
+  <main>
+    <div class="container">
+      <div class="card">
+        <h2>步驟一：輸入或貼上學生名單</h2>
+        <p>名字之間可以用「換行」、「逗號」、「頓號」或空白分隔，例如：</p>
+        <p><code>小明, 小美, 小華, 小英</code><br>或</p>
+        <p><code>小明<br>小美<br>小華<br>小英</code></p>
+
+        <label for="nameInput">請輸入學生名單：</label>
+        <textarea id="nameInput" placeholder="例如：
+小明
+小美
+小華
+小英"></textarea>
+
+        <div class="btn-row">
+          <button onclick="buildList()">建立名單</button>
+          <button class="btn-secondary" onclick="resetAll()">全部重置</button>
+        </div>
+
+        <div id="status" class="status-bar">目前尚未建立名單。</div>
+      </div>
+
+      <div class="card">
+        <h2>步驟二：開始隨機點名</h2>
+        <p>按下「隨機點名」後，系統會從「尚未點到的學生」中抽出一位，同一輪不會重複點到。</p>
+
+        <div class="btn-row">
+          <button onclick="pickRandom()">隨機點名</button>
+        </div>
+
+        <div class="current-name-box">
+          <div class="current-label">本次點到的學生：</div>
+          <div id="currentName" class="current-name"></div>
+        </div>
+
+        <div class="history-box">
+          <div class="history-title">點名紀錄（最新在最前面）：</div>
+          <div id="historyList" class="history-list"></div>
+        </div>
+
+        <div class="note">
+          小技巧：若同一班固定座位，可以照座號先輸入一整份名單，
+          上課時就只要按「隨機點名」按鈕即可，不需要重新輸入。
+        </div>
+
+        <div class="homework">
+          <div class="homework-title">延伸作業題目：</div>
+          <ul>
+            <li>在畫面上加一個「只顯示尚未點到名單」的區塊，方便老師確認。</li>
+            <li>加入「本節課已點到幾次」的次數統計，例如每位學生被點到的次數。</li>
+            <li>讓學生自己改版：把背景顏色、字體大小、按鈕文字改成自己喜歡的風格。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="back-home">
+        <a href="index.html">⬅ 回首頁（回到教學網站首頁）</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
