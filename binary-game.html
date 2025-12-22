@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>終極密碼遊戲（二元搜尋概念）｜梅子的網際網路學習歷程</title>
+  <style>
+    :root{
+      --ink:#0f172a;
+      --muted:#64748b;
+      --bg:#eff6ff;
+      --panel:#ffffff;
+      --brand:#4f46e5;
+      --accent:#f97316;
+      --accent2:#10b981;
+    }
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{
+      font-family:"Microsoft JhengHei",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#e0f2fe,#eef2ff 45%,#fae8ff);
+      color:var(--ink);
+      line-height:1.8;
+      font-size:16px;
+    }
+    a{color:#4f46e5;text-decoration:none;}
+    a:hover{text-decoration:underline;}
+
+    .container{
+      max-width:960px;
+      margin:0 auto;
+      padding:0 16px 30px;
+    }
+
+    header{
+      background:#0f172a;
+      color:#e5e7eb;
+      box-shadow:0 4px 16px rgba(15,23,42,0.7);
+      margin-bottom:16px;
+    }
+    .topbar{
+      max-width:960px;
+      margin:0 auto;
+      padding:10px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .brand-title{
+      font-size:18px;
+      font-weight:700;
+    }
+    .brand-sub{
+      font-size:13px;
+      color:#9ca3af;
+    }
+    .top-left{
+      display:flex;
+      flex-direction:column;
+    }
+    .btn-home{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid #4b5563;
+      color:#e5e7eb;
+      font-size:14px;
+      text-decoration:none;
+      background:#020617;
+    }
+    .btn-home:hover{
+      background:#111827;
+    }
+
+    /* 抽獎機 + hero */
+    .hero-wrap{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .hero-text{
+      flex:1.2;
+      background:radial-gradient(circle at top left,#e0f2fe,#fef3c7 45%,#fee2e2);
+      border-radius:18px;
+      padding:14px 16px 14px;
+      box-shadow:0 10px 24px rgba(15,23,42,0.15);
+      border:1px solid #e5e7eb;
+    }
+    .hero-title{
+      font-size:22px;
+      font-weight:800;
+      margin:0 0 6px;
+    }
+    .hero-desc{
+      font-size:15px;
+      color:#334155;
+      margin:0 0 4px;
+    }
+    .hero-list{
+      margin:4px 0 0 18px;
+      padding:0;
+      font-size:14px;
+      color:#4b5563;
+    }
+    .hero-list li{
+      margin-bottom:3px;
+    }
+
+    .machine-box{
+      flex:1;
+      min-width:240px;
+      display:flex;
+      justify-content:center;
+    }
+    .machine-card{
+      width:260px;
+      height:230px;
+      border-radius:24px;
+      background:radial-gradient(circle at 20% 0,#fef3c7,#f97316);
+      box-shadow:0 18px 40px rgba(15,23,42,0.35);
+      border:3px solid #facc15;
+      padding:12px 10px 10px;
+      position:relative;
+      overflow:hidden;
+    }
+    .machine-top{
+      text-align:center;
+      font-size:15px;
+      font-weight:800;
+      color:#1f2937;
+      letter-spacing:2px;
+    }
+    .machine-top span{
+      color:#b91c1c;
+    }
+    .machine-window{
+      margin:10px auto 0;
+      width:92%;
+      height:115px;
+      border-radius:24px;
+      background:#020617;
+      border:3px solid #e5e7eb;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:6px;
+      position:relative;
+      overflow:hidden;
+      transform-origin:center;
+    }
+    .machine-window.shake{
+      animation:shake 0.12s linear infinite;
+    }
+    .machine-base{
+      position:absolute;
+      bottom:0;
+      left:0;
+      right:0;
+      height:46px;
+      background:linear-gradient(to top,#1e293b,#0f172a);
+      border-top:3px solid rgba(15,23,42,0.8);
+    }
+    .machine-slot{
+      position:absolute;
+      bottom:8px;
+      left:50%;
+      transform:translateX(-50%);
+      width:90px;
+      height:16px;
+      border-radius:10px;
+      background:#e5e7eb;
+      box-shadow:inset 0 2px 4px rgba(15,23,42,0.4);
+    }
+    .machine-handle{
+      position:absolute;
+      right:10px;
+      bottom:26px;
+      width:22px;
+      height:22px;
+      border-radius:50%;
+      background:radial-gradient(circle at 30% 20%,#fee2e2,#fb923c);
+      border:2px solid #b91c1c;
+      box-shadow:0 4px 8px rgba(15,23,42,0.5);
+    }
+    .machine-footer{
+      position:absolute;
+      bottom:2px;
+      left:0;
+      right:0;
+      text-align:center;
+      font-size:11px;
+      color:#fefce8;
+      opacity:.9;
+      z-index:2;
+    }
+
+    @keyframes shake{
+      0%{transform:translateX(0);}
+      25%{transform:translateX(-2px);}
+      50%{transform:translateX(2);}
+      75%{transform:translateX(-1px);}
+      100%{transform:translateX(0);}
+    }
+
+    .ball{
+      width:36px;
+      height:36px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-size:16px;
+      color:#0f172a;
+      background:radial-gradient(circle at 30% 20%,#fff,#fee2e2 45%,#fecaca);
+      border:2px solid rgba(15,23,42,0.2);
+      box-shadow:0 3px 8px rgba(15,23,42,0.7);
+    }
+    .ball.low{
+      background:radial-gradient(circle at 30% 20%,#ecfdf5,#bbf7d0 50%,#6ee7b7);
+      border-color:#16a34a;
+    }
+    .ball.high{
+      background:radial-gradient(circle at 30% 20%,#eff6ff,#bfdbfe 50%,#93c5fd);
+      border-color:#1d4ed8;
+    }
+    .ball.mid{
+      background:radial-gradient(circle at 30% 20%,#f5f3ff,#ddd6fe 50%,#a5b4fc);
+      border-color:#4f46e5;
+    }
+    .ball.placeholder{
+      background:radial-gradient(circle at 30% 20%,#e5e7eb,#cbd5f5 50%,#9ca3af);
+      color:#020617;
+      border-color:#6b7280;
+    }
+
+    main{
+      margin-top:12px;
+    }
+    .card{
+      background:var(--panel);
+      border-radius:18px;
+      border:1px solid #e5e7eb;
+      padding:18px 20px 18px;
+      margin-top:12px;
+      box-shadow:0 10px 26px rgba(15,23,42,0.18);
+    }
+    .card h2{
+      margin-top:0;
+      margin-bottom:6px;
+      font-size:20px;
+    }
+    .card p{
+      margin:4px 0 8px;
+      color:var(--muted);
+    }
+
+    .badge{
+      display:inline-block;
+      font-size:11px;
+      padding:2px 7px;
+      border-radius:999px;
+      background:#eef2ff;
+      color:#3730a3;
+      border:1px solid #c7d2fe;
+      margin-left:6px;
+    }
+
+    .control-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+      margin-top:8px;
+    }
+    label{
+      font-weight:600;
+      font-size:14px;
+    }
+    input[type="number"]{
+      width:90px;
+      padding:6px 8px;
+      border-radius:10px;
+      border:1px solid #cbd5f5;
+      font-size:14px;
+    }
+    input[type="number"]:focus{
+      outline:none;
+      border-color:#4f46e5;
+      box-shadow:0 0 0 2px rgba(79,70,229,0.25);
+    }
+
+    button{
+      padding:7px 16px;
+      cursor:pointer;
+      border-radius:999px;
+      border:1px solid #4f46e5;
+      background:#4f46e5;
+      color:#fff;
+      font-size:14px;
+      font-weight:600;
+      box-shadow:0 8px 18px rgba(79,70,229,0.45);
+      transition:transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
+    }
+    button:hover{
+      transform:translateY(-1px);
+      box-shadow:0 10px 22px rgba(79,70,229,0.55);
+    }
+    .btn-ghost{
+      background:#e5e7eb;
+      color:#111827;
+      border-color:#d4d4d8;
+      box-shadow:none;
+    }
+    .btn-ghost:hover{
+      background:#d4d4d8;
+    }
+
+    .hint{
+      font-size:13px;
+      color:#6b7280;
+      margin-top:4px;
+    }
+
+    .status{
+      margin-top:8px;
+      font-size:14px;
+      color:#111827;
+    }
+    .status-strong{
+      font-weight:700;
+      color:#b91c1c;
+    }
+
+    .history{
+      margin-top:10px;
+      padding:8px 10px;
+      border-radius:12px;
+      background:#f9fafb;
+      border:1px solid #e5e7eb;
+      font-size:13px;
+      max-height:180px;
+      overflow:auto;
+    }
+    .history-title{
+      font-weight:700;
+      margin-bottom:4px;
+    }
+    .history-item{
+      margin-bottom:3px;
+    }
+
+    .back-home{
+      margin-top:18px;
+      text-align:center;
+      font-size:14px;
+    }
+    .back-home a{
+      text-decoration:none;
+      color:#4f46e5;
+      font-weight:600;
+    }
+
+    @media (max-width:720px){
+      .card{padding:16px 14px;}
+      .hero-title{font-size:20px;}
+    }
+  </style>
+  <script>
+    let minVal = 1;
+    let maxVal = 100;
+    let secret = 0;
+    let stepCount = 0;
+    let finished = false;
+
+    function initGame(){
+      const minInput = document.getElementById("minInput");
+      const maxInput = document.getElementById("maxInput");
+      const low = Number(minInput.value) || 1;
+      const high = Number(maxInput.value) || 100;
+
+      if(low >= high){
+        alert("最小值必須比最大值小。請重新設定範圍。");
+        return;
+      }
+
+      minVal = low;
+      maxVal = high;
+      secret = Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal;
+      stepCount = 0;
+      finished = false;
+
+      document.getElementById("guessInput").value = "";
+      document.getElementById("status").innerHTML =
+        "已產生一個介於 <b>" + minVal + "</b> 與 <b>" + maxVal + "</b> 之間的秘密數字，請開始猜！";
+      document.getElementById("historyList").innerHTML = "";
+      updateMachineWindow();
+    }
+
+    function updateMachineWindow(mid){
+      const win = document.getElementById("machineWindow");
+      if(!win) return;
+
+      if(finished){
+        win.classList.remove("shake");
+      }else{
+        win.classList.add("shake");
+        setTimeout(()=>win.classList.remove("shake"), 200);
+      }
+
+      const low = minVal;
+      const high = maxVal;
+      const midVal = (typeof mid === "number") ? mid : Math.floor((low + high)/2);
+
+      win.innerHTML =
+        "<div class='ball low'>" + low + "</div>" +
+        "<div class='ball mid'>" + midVal + "</div>" +
+        "<div class='ball high'>" + high + "</div>";
+    }
+
+    function suggestMid(){
+      const mid = Math.floor((minVal + maxVal)/2);
+      const msg = "目前範圍是 " + minVal + " ~ " + maxVal +
+                  "，使用「二元搜尋」策略，建議你猜：" + mid;
+      document.getElementById("status").innerHTML = msg;
+      updateMachineWindow(mid);
+    }
+
+    function makeGuess(){
+      if(finished){
+        alert("這局已經結束了，請按「重新開始一局」再玩一次。");
+        return;
+      }
+      const input = document.getElementById("guessInput");
+      const guessStr = input.value.trim();
+      if(!guessStr){
+        alert("請先輸入你要猜的數字。");
+        input.focus();
+        return;
+      }
+      const guess = Number(guessStr);
+      if(Number.isNaN(guess)){
+        alert("請輸入「數字」。");
+        input.focus();
+        return;
+      }
+      if(guess < minVal || guess > maxVal){
+        alert("請輸入目前範圍內的數字（" + minVal + " ~ " + maxVal + "）。");
+        input.focus();
+        return;
+      }
+
+      stepCount++;
+      let hint = "";
+      if(guess === secret){
+        finished = true;
+        hint = "✅ 恭喜！你在第 " + stepCount + " 次猜中秘密數字 " + secret + "！";
+        document.getElementById("status").innerHTML =
+          "<span class='status-strong'>" + hint + "</span><br>如果你每次都猜中間（Binary Search），理論上大約只要 " +
+          Math.ceil(Math.log2(maxVal - minVal + 1)) + " 次就可以保證找到了。";
+      }else if(guess < secret){
+        minVal = Math.max(minVal, guess + 1);
+        hint = "再大一點！秘密數字比 " + guess + " 大。";
+        document.getElementById("status").innerHTML =
+          hint + " 目前新的範圍是 " + minVal + " ~ " + maxVal + "。";
+      }else{
+        maxVal = Math.min(maxVal, guess - 1);
+        hint = "再小一點！秘密數字比 " + guess + " 小。";
+        document.getElementById("status").innerHTML =
+          hint + " 目前新的範圍是 " + minVal + " ~ " + maxVal + "。";
+      }
+
+      const historyList = document.getElementById("historyList");
+      const div = document.createElement("div");
+      div.className = "history-item";
+      div.textContent = "第 " + stepCount + " 次：你猜 " + guess + " → " + hint;
+      historyList.appendChild(div);
+      historyList.scrollTop = historyList.scrollHeight;
+
+      updateMachineWindow();
+      input.value = "";
+      input.focus();
+    }
+
+    window.addEventListener("load", ()=>{
+      initGame();
+    });
+  </script>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div class="top-left">
+        <div class="brand-title">梅子的網際網路學習歷程</div>
+        <div class="brand-sub">終極密碼遊戲：用二元搜尋概念來猜數字</div>
+      </div>
+      <a class="btn-home" href="index.html">← 回首頁</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="hero-wrap">
+      <section class="hero-text">
+        <h1 class="hero-title">來玩終極密碼遊戲！（二元搜尋版）</h1>
+        <p class="hero-desc">
+          電腦會在一個範圍內偷偷選一個數字，你的任務是用最少的次數把它找出來。
+          如果每次都猜「中間值」，其實就是在做 <b>Binary Search（二元搜尋）</b>！
+        </p>
+        <ul class="hero-list">
+          <li>可以設定範圍（預設 1 ~ 100），按下「重新開始一局」產生新的秘密數字。</li>
+          <li>每次猜完，畫面會告訴你「再大一點」或「再小一點」，並縮小下一次的範圍。</li>
+          <li>右邊「抽獎機視窗」會顯示目前的 <b>low / mid / high</b> 三顆球，幫助你視覺化二元搜尋。</li>
+          <li>可以請學生試試看：「亂猜」和「每次猜中間」哪一種策略比較快？</li>
+        </ul>
+      </section>
+
+      <aside class="machine-box">
+        <div class="machine-card">
+          <div class="machine-top">終極<span>密碼機</span></div>
+          <div id="machineWindow" class="machine-window">
+            <!-- 這裡會顯示 low / mid / high 三顆球 -->
+          </div>
+          <div class="machine-base"></div>
+          <div class="machine-slot"></div>
+          <div class="machine-handle"></div>
+          <div class="machine-footer">low / mid / high 三顆球，幫你看出「下一次中間要猜哪裡」</div>
+        </div>
+      </aside>
+    </div>
+
+    <main>
+      <section class="card">
+        <h2>1. 設定遊戲範圍 <span class="badge">預設 1 ~ 100</span></h2>
+        <p>可以改成 1 ~ 200、1 ~ 999... 看看最大次數需要幾步才會猜中。</p>
+        <div class="control-row">
+          <label for="minInput">最小值：</label>
+          <input type="number" id="minInput" value="1">
+          <label for="maxInput">最大值：</label>
+          <input type="number" id="maxInput" value="100">
+          <button type="button" onclick="initGame()">重新開始一局</button>
+        </div>
+        <div class="hint">
+          建議：先用 1 ~ 100 練習，因為理論上 Binary Search 最多只需要約 <code>log2(100) ≈ 7</code> 次就能找出答案。
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>2. 開始猜數字（想像你在抽樂透球）</h2>
+        <p>請輸入一個介於目前範圍內的整數，然後按下「我要猜！」。</p>
+        <div class="control-row">
+          <label for="guessInput">我要猜的數字：</label>
+          <input type="number" id="guessInput" placeholder="例如：50">
+          <button type="button" onclick="makeGuess()">我要猜！</button>
+          <button type="button" class="btn-ghost" onclick="suggestMid()">電腦建議下一步猜哪裡？</button>
+        </div>
+        <div id="status" class="status"></div>
+        <div class="history">
+          <div class="history-title">猜測紀錄：</div>
+          <div id="historyList"></div>
+        </div>
+      </section>
+
+      <div class="back-home">
+        <a href="index.html">⬅ 回首頁（回到教學網站首頁）</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
