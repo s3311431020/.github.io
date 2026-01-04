@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>jQuery 打招呼小程式｜梅子的網際網路學習歷程</title>
+  <title>jQuery 打招呼小程式</title>
   <!-- 載入 jQuery（CDN） -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <style>
@@ -256,20 +256,12 @@
   <div class="container">
     <section class="card">
       <h1>使用 jQuery 做一個「Hello!! 你好」小程式</h1>
-      <p>
-        這個範例示範：在網頁上輸入訪客的名字，按下按鈕後，用 jQuery 取得輸入值，
-        然後在對話框中顯示「Hello!! 你好」的打招呼訊息。
-      </p>
-
-      <div class="form-row">
+       <div class="form-row">
         <label for="txtName">請輸入你的名字：</label>
         <input type="text" id="txtName" placeholder="例如：小明、小美、同學">
         <button id="btnHello" type="button">打招呼 👋</button>
       </div>
-      <div class="hint">
-        提示：這個按鈕背後是 jQuery 的 <code>click()</code> 事件，會把輸入框的內容讀出來顯示在下方對話框。
-      </div>
-
+      
       <div class="bubble-wrap">
         <div class="avatar">😊</div>
         <div id="bubbleText" class="bubble empty">這裡會出現「Hello!! 你好」的問候語～</div>
