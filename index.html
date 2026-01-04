@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>梅子的網際網路學習歷程</title>
+  <style>
+    :root {
+      --ink:#1f2937;
+      --muted:#64748b;
+      --bg:#f3f4ff;
+      --panel:#ffffff;
+      --brand:#4f46e5;
+      --brand-soft:#eef2ff;
+      --accent:#10b981;
+    }
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{
+      font-family:Arial,"微軟正黑體",system-ui,-apple-system,Segoe UI,Roboto,Noto Sans,"Helvetica Neue",sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      line-height:1.8;
+      font-size:16px;
+    }
+
+    a{color:var(--brand);text-decoration:none;}
+    a:hover{text-decoration:underline;}
+
+    .container{
+      max-width:1100px;
+      margin:0 auto;
+      padding:0 16px;
+    }
+
+    header{
+      background:#111827;
+      color:#f9fafb;
+      box-shadow:0 4px 14px rgba(0,0,0,0.35);
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px 0;
+    }
+    .brand-title{
+      font-size:22px;
+      font-weight:700;
+    }
+    .brand-sub{
+      font-size:13px;
+      color:#9ca3af;
+    }
+    .top-left{
+      display:flex;
+      flex-direction:column;
+    }
+    nav{
+      display:flex;
+      gap:12px;
+      font-size:15px;
+    }
+    nav a{
+      color:#e5e7eb;
+      padding:7px 12px;
+      border-radius:999px;
+      border:1px solid transparent;
+      text-decoration:none;
+    }
+    nav a:hover{
+      border-color:#4b5563;
+      background:#030712;
+    }
+    .nav-toggle{
+      display:none;
+      background:none;
+      border:1px solid #4b5563;
+      border-radius:999px;
+      color:#e5e7eb;
+      padding:4px 10px;
+      font-size:16px;
+      cursor:pointer;
+    }
+
+    .hero{
+      background:radial-gradient(circle at top left,#e0e7ff,#fef9c3 40%,#fee2e2);
+      padding:26px 0 22px;
+      border-bottom:1px solid #e5e7eb;
+    }
+    .hero-inner{
+      display:flex;
+      gap:26px;
+      align-items:center;
+    }
+    .hero-text{
+      flex:1.2;
+    }
+    .hero-kicker{
+      font-size:14px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+    .hero-title{
+      font-size:28px;
+      font-weight:800;
+      letter-spacing:1px;
+      margin:0 0 8px;
+    }
+    .hero-desc{
+      font-size:16px;
+      color:var(--muted);
+      margin:0 0 16px;
+    }
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      margin-top:4px;
+    }
+    .btn-primary,
+    .btn-ghost{
+      display:inline-block;
+      padding:9px 16px;
+      border-radius:999px;
+      font-size:15px;
+      font-weight:600;
+      border:1px solid transparent;
+      text-decoration:none;
+      cursor:pointer;
+    }
+    .btn-primary{
+      background:var(--brand);
+      border-color:var(--brand);
+      color:#fff;
+      box-shadow:0 8px 20px rgba(79,70,229,0.35);
+    }
+    .btn-primary:hover{
+      transform:translateY(-1px);
+      box-shadow:0 10px 24px rgba(79,70,229,0.4);
+    }
+    .btn-ghost{
+      background:rgba(255,255,255,0.92);
+      border-color:#d1d5db;
+      color:#111827;
+    }
+    .btn-ghost:hover{
+      background:#f9fafb;
+    }
+    .hero-note{
+      font-size:14px;
+      color:var(--muted);
+      margin-top:10px;
+    }
+
+    .hero-visual{
+      flex:1;
+      min-width:0;
+    }
+    .hero-card{
+      background:var(--panel);
+      border-radius:18px;
+      border:1px solid #e5e7eb;
+      padding:16px 16px 13px;
+      box-shadow:0 14px 30px rgba(15,23,42,0.17);
+      font-size:14px;
+    }
+    .hero-card h3{
+      margin:0 0 6px;
+      font-size:18px;
+    }
+    .hero-card p{
+      margin:4px 0 8px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    section{
+      padding:26px 0;
+    }
+    .section-title{
+      font-size:22px;
+      font-weight:700;
+      margin:0 0 8px;
+    }
+    .section-desc{
+      font-size:15px;
+      color:var(--muted);
+      margin:0 0 16px;
+    }
+
+    #section-roadmap{
+      background:linear-gradient(135deg,#e0f2fe,#ede9fe);
+    }
+    .roadmap{
+      background:var(--panel);
+      border-radius:16px;
+      border:1px solid #e5e7eb;
+      padding:16px 16px 8px;
+      box-shadow:0 8px 18px rgba(15,23,42,0.07);
+    }
+    .roadmap-list{
+      list-style:none;
+      padding:0;
+      margin:0;
+      border-left:2px solid #e5e7eb;
+    }
+    .roadmap-item{
+      padding-left:14px;
+      margin-bottom:16px;
+      position:relative;
+    }
+    .roadmap-dot{
+      width:11px;
+      height:11px;
+      border-radius:999px;
+      background:var(--brand);
+      border:2px solid #e0e7ff;
+      position:absolute;
+      left:-7px;
+      top:4px;
+      box-shadow:0 0 0 3px rgba(129,140,248,0.3);
+    }
+    .roadmap-label{
+      font-size:16px;
+      font-weight:700;
+      color:#4b5563;
+      margin-bottom:2px;
+    }
+    .roadmap-text{
+      font-size:16px;
+      color:var(--muted);
+    }
+
+    #section-courses{
+      background:linear-gradient(135deg,#fef3c7,#ffe4e6);
+    }
+    .course-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+    }
+    .course-card{
+      background:var(--panel);
+      border-radius:14px;
+      border:1px solid #e5e7eb;
+      padding:14px 14px 12px;
+      box-shadow:0 6px 14px rgba(15,23,42,0.06);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      min-height:160px;
+    }
+    .course-title{
+      font-size:18px;
+      font-weight:700;
+      margin-bottom:6px;
+    }
+    .course-badge{
+      display:inline-block;
+      font-size:12px;
+      padding:3px 8px;
+      border-radius:999px;
+      background:#ecfdf3;
+      color:#166534;
+      border:1px solid #bbf7d0;
+      margin-left:6px;
+    }
+    .course-body{
+      font-size:16px;
+      color:var(--muted);
+      margin-bottom:8px;
+    }
+    .course-footer{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:14px;
+    }
+    .course-footer a{
+      font-weight:600;
+    }
+    .tag{
+      display:inline-block;
+      font-size:12px;
+      padding:2px 7px;
+      border-radius:999px;
+      border:1px solid #e5e7eb;
+      background:#f9fafb;
+      margin-left:6px;
+    }
+
+    #section-practice{
+      background:linear-gradient(135deg,#dcfce7,#e0f2fe);
+    }
+    .practice-panel{
+      background:var(--panel);
+      border-radius:16px;
+      border:1px solid #e5e7eb;
+      padding:16px 16px 10px;
+      box-shadow:0 8px 18px rgba(15,23,42,0.07);
+    }
+    .practice-list{
+      list-style:none;
+      margin:0;
+      padding:0;
+    }
+    .practice-item{
+      margin-bottom:10px;
+      padding-bottom:8px;
+      border-bottom:1px dashed #e5e7eb;
+    }
+    .practice-item:last-child{
+      border-bottom:none;
+      padding-bottom:0;
+    }
+    .practice-name{
+      font-size:16px;
+      font-weight:700;
+      margin-bottom:2px;
+    }
+    .practice-text{
+      font-size:15px;
+      color:var(--muted);
+    }
+    .practice-coming{
+      font-size:14px;
+      color:var(--muted);
+      margin-top:6px;
+    }
+
+    footer{
+      border-top:1px solid #e5e7eb;
+      padding:14px 0 18px;
+      font-size:13px;
+      color:var(--muted);
+      text-align:center;
+      background:#f9fafb;
+    }
+
+    @media (max-width:900px){
+      .hero-inner{
+        flex-direction:column;
+      }
+      .hero{
+        padding-top:22px;
+      }
+      .course-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+    }
+    @media (max-width:768px){
+      .topbar{
+        flex-wrap:wrap;
+      }
+      nav{
+        display:none;
+        width:100%;
+        justify-content:flex-end;
+        flex-wrap:wrap;
+        margin-top:6px;
+      }
+      nav a{
+        margin-left:6px;
+        margin-top:4px;
+      }
+      nav.nav-open{
+        display:flex;
+      }
+      .nav-toggle{
+        display:block;
+      }
+      .course-grid{
+        grid-template-columns:1fr;
+      }
+    }
+    @media (max-width:480px){
+      .hero-title{
+        font-size:24px;
+      }
+      section{
+        padding:22px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container topbar">
+      <div class="top-left">
+        <div class="brand-title">梅子的網際網路學習歷程</div>
+        <div class="brand-sub">從 HTML / CSS 到 JavaScript、Node.js，一步一步記錄學習軌跡。</div>
+      </div>
+      <button class="nav-toggle" id="navToggle">選單 ☰</button>
+      <nav id="mainNav">
+        <a href="#section-courses">課程列表</a>
+        <a href="#section-practice">程式練習專區</a>
+        <a href="#section-roadmap">學習地圖</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <div class="hero-kicker">學習紀錄 · 個人教學網站</div>
+        <h1 class="hero-title">梅子的網際網路學習歷程</h1>
+        <p class="hero-desc">
+          把自己在課堂上教的內容，整理成一個可以反覆學習的網站。<br>
+          從 HTML、CSS 到 JavaScript、排序演算法、二元搜尋等，一點一滴累積。
+        </p>
+        <div class="hero-actions">
+          <a class="btn-primary" href="js-course.html">開始學習 JavaScript 課程</a>
+          <a class="btn-ghost" href="html-course.html">先從 HTML 基礎開始</a>
+        </div>
+        <div class="hero-note">
+          完整課程頁：<a href="html-course.html">HTML 基礎課程</a> ｜ 
+          <a href="css-course.html">CSS &amp; RWD 版型課程</a> ｜ 
+          <a href="js-course.html">JavaScript 完整入門</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card">
+          <h3>網站內容簡介</h3>
+          <p>這個網站會慢慢收集：上課用的範例、學生可以回家練習的小工具、以及完整的課程講義。</p>
+          <p>希望同學不只是「看懂」，還能透過這些小程式動手修改、玩出自己的版本。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 課程列表（放上面） -->
+  <section id="section-courses">
+    <div class="container">
+      <h2 class="section-title">課程列表</h2>
+      <p class="section-desc">目前規劃的主題與課程頁面，會陸續補上內容與範例。</p>
+      <div class="course-grid">
+        <div class="course-card">
+          <div>
+            <div class="course-title">
+              HTML 基礎與網頁結構
+              <span class="course-badge">有內容</span>
+            </div>
+            <div class="course-body">
+              從最基本的 &lt;html&gt;、&lt;head&gt;、&lt;body&gt; 開始，
+              認識標題、段落、連結、圖片與表格，打好網頁架構基礎。
+            </div>
+          </div>
+          <div class="course-footer">
+            <a href="html-course.html">前往 HTML 基礎課程</a>
+            <span class="tag">初學者</span>
+          </div>
+        </div>
+
+        <div class="course-card">
+          <div>
+            <div class="course-title">
+              CSS 樣式與 RWD 版型
+              <span class="course-badge">有內容</span>
+            </div>
+            <div class="course-body">
+              字型、顏色、間距、邊框、Flex、Grid 與 RWD 觀念，
+              讓版面從「能用」變成「好看且好閱讀」。
+            </div>
+          </div>
+          <div class="course-footer">
+            <a href="css-course.html">前往 CSS 樣式與 RWD 課程</a>
+            <span class="tag">排版設計</span>
+          </div>
+        </div>
+
+        <div class="course-card">
+          <div>
+            <div class="course-title">
+              JavaScript 完整入門課程
+              <span class="course-badge">已上線</span>
+            </div>
+            <div class="course-body">
+              包含資料型態、陣列、迴圈、if/switch、函式、Canvas、
+              JSON、jQuery、爬蟲示範、React 計數器、Node 平行運用等。
+            </div>
+          </div>
+          <div class="course-footer">
+            <a href="js-course.html">前往 JavaScript 課程</a>
+            <span class="tag">互動程式</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 程式練習專區 -->
+  <section id="section-practice">
+    <div class="container">
+      <h2 class="section-title">程式練習專區</h2>
+      <p class="section-desc">
+        每週上課做的小專題、小工具，會集中放在這裡，讓學生回家可以重複操作與修改程式碼。
+      </p>
+      <div class="practice-panel">
+        <ul class="practice-list">
+          <li class="practice-item">
+            <div class="practice-name">
+              <a href="shuffle.html">打散程式練習（洗牌 + 抽中 3 位數字 + 最大值）</a>
+            </div>
+            <div class="practice-text">
+              輸入 1 ~ n 的整數範圍，使用 Fisher-Yates 洗牌演算法打散順序，
+              再抽出 3 位中獎號碼，並找出最大值及其在陣列中的位置。
+              練習重點：for 迴圈、陣列、Math.random()、最大值搜尋。
+            </div>
+          </li>
+
+          <li class="practice-item">
+            <div class="practice-name">
+              <a href="shuffle-sort.html">打散 + 排序法練習</a>
+            </div>
+            <div class="practice-text">
+              輸入一串任意數字，先做「打散」，再顯示「由小到大」與「由大到小」排序結果。
+              練習重點：字串切割、陣列複製、Fisher-Yates 洗牌、Array.sort() 比較函式。
+            </div>
+          </li>
+
+          <li class="practice-item">
+            <div class="practice-name">
+              <a href="sort-four.html">四種排序演算法比較（Bubble / Insertion / Selection / Quick）</a>
+            </div>
+            <div class="practice-text">
+              自動產生或輸入最多 99 個數值，一次比較四種排序演算法的執行時間、比較次數與交換次數。
+              練習重點：時間複雜度 Big-O 概念與不同演算法的效能差異。
+            </div>
+          </li>
+
+          <li class="practice-item">
+            <div class="practice-name">
+              <a href="binary-game.html">來玩終極密碼遊戲（用二元搜尋找答案）</a>
+            </div>
+            <div class="practice-text">
+              電腦在一個範圍內選一個秘密數字，你要用最少次數把它找出來。
+              搭配抽獎機視窗顯示 low / mid / high 三顆球，幫助理解 Binary Search 的範圍縮小過程。
+              練習重點：二元搜尋的思考方式、猜中間 vs 亂猜的差異。
+            </div>
+          </li>
+
+          <li class="practice-item">
+            <div class="practice-name">
+              <a href="hello-jquery.html" target="_blank">jQuery 打招呼小程式（Hello!! 你好）</a>
+            </div>
+            <div class="practice-text">
+              輸入訪客的姓名，按下按鈕後，用 jQuery 讀取輸入框內容，
+              在可愛的對話框中顯示「Hello!! 你好」，練習 jQuery 的 click 事件與 .val() / .html() 的用法。
+            </div>
+          </li>
+
+          <li class="practice-coming">
+            之後每週上課完成的專題（例如：成績計算器、樂透號碼產生器、小小計時器…）都會陸續新增在這裡。
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 學習地圖（放最下面） -->
+  <section id="section-roadmap">
+    <div class="container">
+      <h2 class="section-title">學習地圖</h2>
+      <p class="section-desc">
+        建議的學習順序，可以依照階段自由往前或往後跳，但先把基礎打穩最重要。
+      </p>
+      <div class="roadmap">
+        <ul class="roadmap-list">
+          <li class="roadmap-item">
+            <div class="roadmap-dot"></div>
+            <div class="roadmap-label">階段一：HTML &amp; 網頁基礎</div>
+            <div class="roadmap-text">
+              了解網頁是怎麼組成的、常見標籤、超連結、圖片與表單等。
+              完整版請看 <a href="html-course.html">HTML 基礎課程頁</a>。
+            </div>
+          </li>
+          <li class="roadmap-item">
+            <div class="roadmap-dot"></div>
+            <div class="roadmap-label">階段二：CSS &amp; RWD 版型</div>
+            <div class="roadmap-text">
+              學會調整字體、顏色、排版，並透過 RWD 讓網站在手機與電腦都好看。
+              完整版請看 <a href="css-course.html">CSS &amp; RWD 課程頁</a>。
+            </div>
+          </li>
+          <li class="roadmap-item">
+            <div class="roadmap-dot"></div>
+            <div class="roadmap-label">階段三：JavaScript 核心語法</div>
+            <div class="roadmap-text">
+              變數、條件、迴圈、陣列、函式、Canvas、JSON、爬蟲示範與 Node.js 概念。
+              → 已整理於 <a href="js-course.html">js-course.html</a>。
+            </div>
+          </li>
+          <li class="roadmap-item">
+            <div class="roadmap-dot"></div>
+            <div class="roadmap-label">階段四：進階主題 &amp; 專題</div>
+            <div class="roadmap-text">
+              React 計數器、Node.js 平行運用、實作小專題（成績計算器、小小爬蟲 demo、簡易遊戲介面…）。
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      © 梅子的網際網路學習歷程 — 由個人教學與實驗整理而成。歡迎分享網址給需要的人。
+    </div>
+  </footer>
+
+  <script>
+    const navToggle = document.getElementById('navToggle');
+    const mainNav = document.getElementById('mainNav');
+    if (navToggle && mainNav) {
+      navToggle.addEventListener('click', () => {
+        mainNav.classList.toggle('nav-open');
+      });
+    }
+  </script>
+</body>
+</html>
