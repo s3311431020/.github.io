@@ -179,6 +179,14 @@
       color:var(--muted);
       font-size:14px;
     }
+    .hero-img{
+      width:100%;
+      height:auto;
+      display:block;
+      border:1px solid #e5e7eb;
+      border-radius:12px;
+      margin-top:10px;
+    }
 
     section{
       padding:26px 0;
@@ -401,7 +409,6 @@
         <a href="#section-courses">課程列表</a>
         <a href="#section-practice">程式練習專區</a>
         <a href="#section-roadmap">學習地圖</a>
-        <img src="./images/crawler-outline.png" alt="爬蟲程式示範">
       </nav>
     </div>
   </header>
@@ -425,8 +432,14 @@
           <a href="js-course.html">JavaScript 完整入門</a>
         </div>
       </div>
+
       <div class="hero-visual">
-       </div>
+        <div class="hero-card">
+          <h3>爬蟲程式示範</h3>
+          <p>課程大綱截圖（之後可加上爬蟲範例連結）</p>
+          <img src="./images/crawler-outline.png" alt="爬蟲程式示範大綱" class="hero-img">
+        </div>
+      </div>
     </div>
   </section>
 
@@ -515,7 +528,6 @@
             </div>
             <div class="practice-text">
               輸入一串任意數字，先做「打散」，再顯示「由小到大」與「由大到小」排序結果。
-             
             </div>
           </li>
 
@@ -614,7 +626,3 @@
   </script>
 </body>
 </html>
-
-
-
-
